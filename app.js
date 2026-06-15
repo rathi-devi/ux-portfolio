@@ -7,8 +7,51 @@ let renderer, scene, camera, treeGroup, clock;
 let animationId = null;
 
 // ─── i18n State ──────────────────────────────────────────────
-let translations = {};
-let currentLang  = localStorage.getItem('lang') || 'en';
+// Translations are inlined here — no external fetch, no failure modes.
+const TRANSLATIONS = {
+  en: {
+    'nav.work':               'Work',
+    'nav.about':              'About',
+    'nav.contact':            'Contact',
+    'hero.label':             'UX Designer',
+    'hero.title':             'Designing experiences<br>people actually want.',
+    'hero.sub':               'I work at the intersection of research, systems thinking,<br>and visual clarity to build products that feel effortless.',
+    'work.heading':           'Selected Work',
+    'filter.all':             'All',
+    'about.heading':          'About',
+    'about.p1':               'I\'m a UX/UI designer with a background in research and systems design. I believe good design is invisible — it removes friction, builds trust, and makes complex things feel simple.',
+    'about.p2':               'Currently open to new opportunities and collaborations.',
+    'about.label.based':      'Based in',
+    'about.label.experience': 'Experience',
+    'about.label.tools':      'Tools',
+    'about.value.based':      'Oslo, Norway',
+    'about.value.experience': 'UX Research, Interaction Design, Design Systems',
+    'about.value.tools':      'Figma, Maze, FigJam, Framer',
+    'lang.toggle':            'NO',
+  },
+  no: {
+    'nav.work':               'Arbeid',
+    'nav.about':              'Om meg',
+    'nav.contact':            'Kontakt',
+    'hero.label':             'UX-designer',
+    'hero.title':             'Å designe opplevelser<br>folk faktisk vil ha.',
+    'hero.sub':               'Jeg jobber i skjæringspunktet mellom forskning, systemtenkning<br>og visuell tydelighet for å lage produkter som føles enkle.',
+    'work.heading':           'Utvalgte prosjekter',
+    'filter.all':             'Alle',
+    'about.heading':          'Om meg',
+    'about.p1':               'Jeg er en UX/UI-designer med bakgrunn innen forskning og systemdesign. Jeg tror at god design er usynlig — den fjerner friksjon, bygger tillit og gjør komplekse ting enkle.',
+    'about.p2':               'Åpen for nye muligheter og samarbeid.',
+    'about.label.based':      'Basert i',
+    'about.label.experience': 'Erfaring',
+    'about.label.tools':      'Verktøy',
+    'about.value.based':      'Oslo, Norge',
+    'about.value.experience': 'UX-forskning, Interaksjonsdesign, Designsystemer',
+    'about.value.tools':      'Figma, Maze, FigJam, Framer',
+    'lang.toggle':            'EN',
+  },
+};
+
+let currentLang = localStorage.getItem('lang') || 'en';
 
 // ─── DOM References ──────────────────────────────────────────
 const grid        = document.getElementById('projectGrid');
@@ -17,18 +60,17 @@ const yearSpan    = document.getElementById('year');
 const langToggle  = document.getElementById('langToggle');
 
 // ─── Init ────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
   if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 
-  await loadTranslations();   // load i18n first so UI is correct immediately
-  applyLanguage(currentLang);
+  applyLanguage(currentLang);   // synchronous — no fetch needed
   loadProjects();
 
   langToggle.addEventListener('click', () => {
     currentLang = currentLang === 'en' ? 'no' : 'en';
     localStorage.setItem('lang', currentLang);
     applyLanguage(currentLang);
-    // Re-render cards so project text updates if JSON has language variants
+    // Re-render cards so localised project text updates instantly
     renderProjects(activeFilter === 'all'
       ? allProjects
       : allProjects.filter(p => p.category === activeFilter));
@@ -39,19 +81,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 // INTERNATIONALISATION (i18n)
 // ════════════════════════════════════════════════════════════
 
-// ─── Load translations.json ───────────────────────────────────
-async function loadTranslations() {
-  try {
-    const res = await fetch('translations.json');
-    translations = await res.json();
-  } catch (e) {
-    console.warn('Could not load translations.json', e);
-  }
-}
-
 // ─── Apply language to all data-i18n elements ────────────────
 function applyLanguage(lang) {
-  const dict = translations[lang] || {};
+  const dict = TRANSLATIONS[lang] || TRANSLATIONS.en;
 
   // Set <html lang="…"> for screen readers and SEO
   document.documentElement.lang = lang;
