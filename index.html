@@ -16,19 +16,21 @@
     <nav class="nav">
       <a href="#" class="nav-logo">RE</a>
       <ul class="nav-links">
-        <li><a href="#work">Work</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="mailto:rathide@gmail.com">Contact</a></li>
+        <li><a href="#work"                  data-i18n="nav.work">Work</a></li>
+        <li><a href="#about"                 data-i18n="nav.about">About</a></li>
+        <li><a href="mailto:rathide@gmail.com" data-i18n="nav.contact">Contact</a></li>
       </ul>
+      <!-- Language toggle: shows the language you will switch TO -->
+      <button class="lang-toggle" id="langToggle" aria-label="Switch language" data-i18n="lang.toggle">NO</button>
     </nav>
   </header>
 
   <main>
 
     <section class="hero">
-      <p class="hero-label">UX Designer</p>
-      <h1 class="hero-title">Designing experiences<br>people actually want.</h1>
-      <p class="hero-sub">
+      <p class="hero-label" data-i18n="hero.label">UX Designer</p>
+      <h1 class="hero-title" data-i18n-html="hero.title">Designing experiences<br>people actually want.</h1>
+      <p class="hero-sub"   data-i18n-html="hero.sub">
         I work at the intersection of research, systems thinking,<br>
         and visual clarity to build products that feel effortless.
       </p>
@@ -36,9 +38,9 @@
 
     <section class="work" id="work">
       <div class="section-header">
-        <h2>Selected Work</h2>
+        <h2 data-i18n="work.heading">Selected Work</h2>
         <div class="filter-bar" id="filterBar">
-          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn active" data-filter="all" data-i18n="filter.all">All</button>
         </div>
       </div>
       <div class="project-grid" id="projectGrid">
@@ -50,24 +52,24 @@
     <section class="about" id="about">
       <div class="about-inner">
         <div class="about-text">
-          <h2>About</h2>
-          <p>
+          <h2 data-i18n="about.heading">About</h2>
+          <p data-i18n="about.p1">
             I'm a UX/UI designer with a background in research and systems design.
             I believe good design is invisible — it removes friction, builds trust,
             and makes complex things feel simple.
           </p>
-          <p>
+          <p data-i18n="about.p2">
             Currently open to new opportunities and collaborations.
           </p>
         </div>
         <div class="about-meta">
           <dl>
-            <dt>Based in</dt>
-            <dd>Oslo, Norway</dd>
-            <dt>Experience</dt>
-            <dd>UX Research, Interaction Design, Design Systems</dd>
-            <dt>Tools</dt>
-            <dd>Figma, Maze, FigJam, Framer</dd>
+            <dt data-i18n="about.label.based">Based in</dt>
+            <dd data-i18n="about.value.based">Oslo, Norway</dd>
+            <dt data-i18n="about.label.experience">Experience</dt>
+            <dd data-i18n="about.value.experience">UX Research, Interaction Design, Design Systems</dd>
+            <dt data-i18n="about.label.tools">Tools</dt>
+            <dd data-i18n="about.value.tools">Figma, Maze, FigJam, Framer</dd>
           </dl>
         </div>
       </div>
@@ -78,7 +80,7 @@
   <footer class="site-footer">
     <p>Rathidevi Easwaran &copy; <span id="year"></span></p>
     <div class="footer-links">
-      <a href="mailto:rathide@gmail.com">Email</a>
+      <a href="mailto:rathide@gmail.com"              data-i18n="nav.contact">Contact</a>
       <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </footer>

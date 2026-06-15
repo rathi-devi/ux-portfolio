@@ -6,16 +6,82 @@ let activeFilter = 'all';
 let renderer, scene, camera, treeGroup, clock;
 let animationId = null;
 
+// ─── i18n State ──────────────────────────────────────────────
+let translations = {};
+let currentLang  = localStorage.getItem('lang') || 'en';
+
 // ─── DOM References ──────────────────────────────────────────
-const grid      = document.getElementById('projectGrid');
-const filterBar = document.getElementById('filterBar');
-const yearSpan  = document.getElementById('year');
+const grid        = document.getElementById('projectGrid');
+const filterBar   = document.getElementById('filterBar');
+const yearSpan    = document.getElementById('year');
+const langToggle  = document.getElementById('langToggle');
 
 // ─── Init ────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+  await loadTranslations();   // load i18n first so UI is correct immediately
+  applyLanguage(currentLang);
   loadProjects();
+
+  langToggle.addEventListener('click', () => {
+    currentLang = currentLang === 'en' ? 'no' : 'en';
+    localStorage.setItem('lang', currentLang);
+    applyLanguage(currentLang);
+    // Re-render cards so project text updates if JSON has language variants
+    renderProjects(activeFilter === 'all'
+      ? allProjects
+      : allProjects.filter(p => p.category === activeFilter));
+  });
 });
+
+// ════════════════════════════════════════════════════════════
+// INTERNATIONALISATION (i18n)
+// ════════════════════════════════════════════════════════════
+
+// ─── Load translations.json ───────────────────────────────────
+async function loadTranslations() {
+  try {
+    const res = await fetch('translations.json');
+    translations = await res.json();
+  } catch (e) {
+    console.warn('Could not load translations.json', e);
+  }
+}
+
+// ─── Apply language to all data-i18n elements ────────────────
+function applyLanguage(lang) {
+  const dict = translations[lang] || {};
+
+  // Set <html lang="…"> for screen readers and SEO
+  document.documentElement.lang = lang;
+
+  // Plain text nodes
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (dict[key] !== undefined) el.textContent = dict[key];
+  });
+
+  // HTML content (elements with <br> etc.)
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.dataset.i18nHtml;
+    if (dict[key] !== undefined) el.innerHTML = dict[key];
+  });
+
+  // Rebuild filter bar labels (dynamic buttons also need translating)
+  const allBtn = filterBar.querySelector('[data-filter="all"]');
+  if (allBtn && dict['filter.all']) allBtn.textContent = dict['filter.all'];
+}
+
+// ─── Helper: get translated project field with fallback ───────
+// Supports optional "title_no" / "description_no" fields in projects.json
+function t(project, field) {
+  if (currentLang !== 'en') {
+    const localised = project[`${field}_${currentLang}`];
+    if (localised) return localised;
+  }
+  return project[field] ?? '';
+}
 
 // ─── Fetch Projects ──────────────────────────────────────────
 async function loadProjects() {
@@ -126,15 +192,15 @@ function createCard(project) {
     <span class="project-year">${escapeHtml(project.year ?? '')}</span>
   `;
 
-  // Title
+  // Title — uses t() to pick localised variant if available in projects.json
   const title = document.createElement('h3');
   title.className = 'project-title';
-  title.textContent = project.title;
+  title.textContent = t(project, 'title');
 
-  // Description
+  // Description — same localisation lookup
   const desc = document.createElement('p');
   desc.className = 'project-description';
-  desc.textContent = project.description;
+  desc.textContent = t(project, 'description');
 
   // Tags
   const tagsEl = document.createElement('div');
