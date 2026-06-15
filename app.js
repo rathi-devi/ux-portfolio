@@ -2,6 +2,10 @@
 let allProjects = [];
 let activeFilter = 'all';
 
+// ─── Three.js State ──────────────────────────────────────────
+let renderer, scene, camera, treeGroup, clock;
+let animationId = null;
+
 // ─── DOM References ──────────────────────────────────────────
 const grid      = document.getElementById('projectGrid');
 const filterBar = document.getElementById('filterBar');
@@ -22,9 +26,11 @@ async function loadProjects() {
 
     buildFilterButtons();
     renderProjects(allProjects);
+    initTree(allProjects.length);       // branches = number of projects
   } catch (err) {
     showError();
     console.error('Could not load projects.json:', err);
+    initTree(2);                        // fallback if JSON fails
   }
 }
 
@@ -152,6 +158,161 @@ function showError() {
       Could not load projects. Make sure <code>projects.json</code> is in the root folder.
     </p>
   `;
+}
+
+// ════════════════════════════════════════════════════════════
+// THREE.JS — PROCEDURAL TREE
+// ════════════════════════════════════════════════════════════
+
+// ─── Setup ───────────────────────────────────────────────────
+function initTree(projectCount) {
+  const canvas = document.getElementById('tree-canvas');
+  if (!canvas || typeof THREE === 'undefined') return;
+
+  // Orthographic camera: 1 unit = 1 pixel, origin at viewport center
+  const W = window.innerWidth;
+  const H = window.innerHeight;
+
+  scene    = new THREE.Scene();
+  camera   = new THREE.OrthographicCamera(-W/2, W/2, H/2, -H/2, 1, 1000);
+  camera.position.z = 100;
+
+  clock    = new THREE.Clock();
+
+  // Alpha: true → renderer background is transparent, CSS colour shows through
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setSize(W, H);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  // Tree lives inside a Group so we can sway the whole thing from the root
+  treeGroup = new THREE.Group();
+  scene.add(treeGroup);
+
+  buildTree(projectCount);
+
+  // ── TODO: Mouse interaction ───────────────────────────────
+  // Add a mousemove listener here and map cursor position to a small
+  // treeGroup.rotation.z / treeGroup.rotation.x offset so the tree
+  // leans subtly toward the pointer.
+  //
+  // window.addEventListener('mousemove', (e) => {
+  //   const nx = (e.clientX / window.innerWidth  - 0.5) * 2; // –1 … +1
+  //   const ny = (e.clientY / window.innerHeight - 0.5) * 2;
+  //   targetRotX = ny *  0.04;
+  //   targetRotZ = nx * -0.06;
+  // });
+  // Then lerp treeGroup.rotation toward target values in tick().
+  // ─────────────────────────────────────────────────────────
+
+  window.addEventListener('resize', handleResize);
+  tick();
+}
+
+// ─── Seeded RNG ───────────────────────────────────────────────
+// Same seed → same tree shape on every page load (no randomness surprises).
+// Change the number passed to makeRng() to explore different shapes.
+function makeRng(seed) {
+  let s = seed;
+  return () => {
+    s = (s * 9301 + 49297) % 233280;
+    return s / 233280;
+  };
+}
+
+// ─── Tree Construction ────────────────────────────────────────
+function buildTree(projectCount) {
+  const rng      = makeRng(42);
+  const segments = []; // flat Vector3 pairs consumed by LineSegments
+
+  // Trunk base: bottom-center of viewport, slightly below mid-screen
+  const baseX      = 0;
+  const baseY      = -window.innerHeight * 0.46;
+  const trunkLen   = window.innerHeight * 0.27;
+
+  branch(segments, rng, baseX, baseY, Math.PI / 2, trunkLen, 0, 6, projectCount);
+
+  const geometry = new THREE.BufferGeometry().setFromPoints(segments);
+
+  // Dark ink colour, low opacity — reads as delicate on the warm background
+  const material = new THREE.LineBasicMaterial({
+    color:       0x1C1A17,
+    transparent: true,
+    opacity:     0.20,
+  });
+
+  treeGroup.add(new THREE.LineSegments(geometry, material));
+}
+
+// ─── Recursive Branch ─────────────────────────────────────────
+// Each call draws one straight segment then spawns child branches.
+//
+// segments    – accumulator array of THREE.Vector3 (pairs = one segment)
+// rng         – seeded random function
+// x, y        – start point of this segment
+// angle       – direction in radians (0 = right, π/2 = up)
+// length      – pixel length of this segment
+// depth       – current recursion depth (0 = trunk base)
+// maxDepth    – stop recursing beyond this
+// projectCount– how many main branches to split into at the first fork
+function branch(segments, rng, x, y, angle, length, depth, maxDepth, projectCount) {
+  if (depth > maxDepth || length < 5) return;
+
+  const ex = x + Math.cos(angle) * length;
+  const ey = y + Math.sin(angle) * length;
+
+  segments.push(new THREE.Vector3(x,  y,  0));
+  segments.push(new THREE.Vector3(ex, ey, 0));
+
+  // First fork uses project count; all deeper forks split in two
+  const splits = depth === 0 ? Math.max(2, projectCount) : 2;
+  const spread = depth === 0 ? Math.PI * 0.62 : Math.PI * 0.44;
+
+  for (let i = 0; i < splits; i++) {
+    const t          = splits === 1 ? 0.5 : i / (splits - 1);
+    const childAngle = angle + (t - 0.5) * spread + (rng() - 0.5) * 0.28;
+    const childLen   = length * (0.60 + rng() * 0.12);
+
+    branch(segments, rng, ex, ey, childAngle, childLen, depth + 1, maxDepth, projectCount);
+  }
+}
+
+// ─── Animation Loop ───────────────────────────────────────────
+// One draw call per frame — very cheap. The only motion is a gentle sway
+// applied to the whole treeGroup around its trunk base.
+function tick() {
+  animationId = requestAnimationFrame(tick);
+
+  const t = clock.getElapsedTime();
+
+  // Slow organic sway — barely perceptible, just enough to feel alive
+  treeGroup.rotation.z = Math.sin(t * 0.22) * 0.011
+                       + Math.sin(t * 0.37) * 0.005; // second harmonic for realism
+
+  // ── TODO: Scroll parallax ─────────────────────────────────
+  // Uncomment to make the tree drift upward as the user scrolls:
+  // treeGroup.position.y = -window.scrollY * 0.12;
+  // ─────────────────────────────────────────────────────────
+
+  renderer.render(scene, camera);
+}
+
+// ─── Resize Handler ───────────────────────────────────────────
+function handleResize() {
+  const W = window.innerWidth;
+  const H = window.innerHeight;
+
+  // Update camera frustum to match new viewport
+  camera.left   = -W / 2;
+  camera.right  =  W / 2;
+  camera.top    =  H / 2;
+  camera.bottom = -H / 2;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(W, H);
+
+  // Rebuild geometry — branch lengths are viewport-relative
+  treeGroup.clear();
+  buildTree(allProjects.length || 2);
 }
 
 // ─── XSS Guard ───────────────────────────────────────────────

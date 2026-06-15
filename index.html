@@ -9,6 +9,9 @@
 </head>
 <body>
 
+  <!-- Three.js background canvas — positioned fixed behind all content -->
+  <canvas id="tree-canvas" aria-hidden="true"></canvas>
+
   <header class="site-header">
     <nav class="nav">
       <a href="#" class="nav-logo">RE</a>
@@ -80,6 +83,8 @@
     </div>
   </footer>
 
+  <!-- Three.js global build (no build tool needed) -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
