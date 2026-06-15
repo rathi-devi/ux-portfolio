@@ -13,40 +13,40 @@ const TRANSLATIONS = {
     'nav.work':               'Work',
     'nav.about':              'About',
     'nav.contact':            'Contact',
-    'hero.label':             'UX Designer',
-    'hero.title':             'Designing experiences<br>people actually want.',
-    'hero.sub':               'I work at the intersection of research, systems thinking,<br>and visual clarity to build products that feel effortless.',
+    'hero.label':             'Media & Interaction Designer',
+    'hero.title':             'Challenging conventions.<br>Connecting insight and interaction.',
+    'hero.sub':               'A graduate from UiB who believes good design bridges deep user insight with experimental code. I design to trigger curiosity and reflection, often by rethinking established digital patterns.',
     'work.heading':           'Selected Work',
     'filter.all':             'All',
-    'about.heading':          'About',
-    'about.p1':               'I\'m a UX/UI designer with a background in research and systems design. I believe good design is invisible — it removes friction, builds trust, and makes complex things feel simple.',
-    'about.p2':               'Currently open to new opportunities and collaborations.',
+    'about.heading':          'About Me',
+    'about.p1':               'With a bachelor\'s degree in Media and Interaction Design from the University of Bergen, I focus on projects where user research and technical execution meet. I like to think outside the box — whether that means removing manipulative algorithms or intentionally using positive friction to make users stop and reflect.',
+    'about.p2':               'Currently open to new opportunities in Bergen or remote.',
     'about.label.based':      'Based in',
-    'about.label.experience': 'Experience',
-    'about.label.tools':      'Tools',
-    'about.value.based':      'Oslo, Norway',
-    'about.value.experience': 'UX Research, Interaction Design, Design Systems',
-    'about.value.tools':      'Figma, Maze, FigJam, Framer',
+    'about.label.experience': 'Core Focus',
+    'about.label.tools':      'Tools & Tech',
+    'about.value.based':      'Bergen, Norway',
+    'about.value.experience': 'Interaction Design, UX Research, Positive Friction, Creative Code',
+    'about.value.tools':      'Figma, Three.js, Spline, VS Code, Git',
     'lang.toggle':            'NO',
   },
   no: {
     'nav.work':               'Arbeid',
     'nav.about':              'Om meg',
     'nav.contact':            'Kontakt',
-    'hero.label':             'UX-designer',
-    'hero.title':             'Å designe opplevelser<br>folk faktisk vil ha.',
-    'hero.sub':               'Jeg jobber i skjæringspunktet mellom forskning, systemtenkning<br>og visuell tydelighet for å lage produkter som føles enkle.',
+    'hero.label':             'Medie- og interaksjonsdesigner',
+    'hero.title':             'Utfordrer konvensjoner.<br>Kobler innsikt og interaksjon.',
+    'hero.sub':               'Utdannet fra UiB med en tro på at god design bygger bro mellom dyp brukerinnsikt og eksperimentell kode. Jeg designer for å trigge nysgjerrighet og refleksjon, ofte ved å utfordre etablerte digitale mønstre.',
     'work.heading':           'Utvalgte prosjekter',
     'filter.all':             'Alle',
     'about.heading':          'Om meg',
-    'about.p1':               'Jeg er en UX/UI-designer med bakgrunn innen forskning og systemdesign. Jeg tror at god design er usynlig — den fjerner friksjon, bygger tillit og gjør komplekse ting enkle.',
-    'about.p2':               'Åpen for nye muligheter og samarbeid.',
+    'about.p1':               'Med en bachelorgrad i medie- og interaksjonsdesign fra Universitetet i Bergen, fokuserer jeg på prosjekter der brukerinnsikt og teknisk gjennomføring henger tett sammen. Jeg liker å tenke utenfor boksen – enten det betyr å fjerne manipulerende algoritmer, eller å bevisst bruke positiv friksjon for å gi brukeren rom til refleksjon.',
+    'about.p2':               'Åpen for spennende stillinger og designsamarbeid.',
     'about.label.based':      'Basert i',
-    'about.label.experience': 'Erfaring',
-    'about.label.tools':      'Verktøy',
-    'about.value.based':      'Oslo, Norge',
-    'about.value.experience': 'UX-forskning, Interaksjonsdesign, Designsystemer',
-    'about.value.tools':      'Figma, Maze, FigJam, Framer',
+    'about.label.experience': 'Kjernefokus',
+    'about.label.tools':      'Verktøy & Teknologi',
+    'about.value.based':      'Bergen, Norge',
+    'about.value.experience': 'Interaksjonsdesign, UX-Innsikt, Positiv Friksjon, Kreativ koding',
+    'about.value.tools':      'Figma, Three.js, Spline, VS Code, Git',
     'lang.toggle':            'EN',
   },
 };
@@ -105,14 +105,15 @@ function applyLanguage(lang) {
   if (allBtn && dict['filter.all']) allBtn.textContent = dict['filter.all'];
 }
 
-// ─── Helper: get translated project field with fallback ───────
-// Supports optional "title_no" / "description_no" fields in projects.json
+// ─── Helper: get translated project field ─────────────────────
+// Handles both object form { no: "...", en: "..." }
+// and plain string fallback for simple fields like category.
 function t(project, field) {
-  if (currentLang !== 'en') {
-    const localised = project[`${field}_${currentLang}`];
-    if (localised) return localised;
+  const val = project[field];
+  if (val && typeof val === 'object') {
+    return val[currentLang] || val.en || '';
   }
-  return project[field] ?? '';
+  return val ?? '';
 }
 
 // ─── Fetch Projects ──────────────────────────────────────────
@@ -185,7 +186,7 @@ function createCard(project) {
   card.className = 'project-card';
   card.setAttribute('role', 'button');
   card.setAttribute('tabindex', '0');
-  card.setAttribute('aria-label', `View project: ${project.title}`);
+  card.setAttribute('aria-label', `View project: ${t(project, 'title')}`);
 
   // Navigate on click or Enter key
   const navigate = () => {
@@ -201,7 +202,7 @@ function createCard(project) {
   if (project.thumbnail) {
     const img = document.createElement('img');
     img.src   = project.thumbnail;
-    img.alt   = project.title;
+    img.alt   = t(project, 'title');
     img.loading = 'lazy';
     // Fallback if image missing
     img.onerror = () => {
@@ -221,7 +222,7 @@ function createCard(project) {
   meta.className = 'project-meta';
   meta.innerHTML = `
     <span class="project-category">${escapeHtml(project.category)}</span>
-    <span class="project-year">${escapeHtml(project.year ?? '')}</span>
+    <span class="project-year">${escapeHtml(project.course ?? project.year ?? '')}</span>
   `;
 
   // Title — uses t() to pick localised variant if available in projects.json
@@ -229,10 +230,10 @@ function createCard(project) {
   title.className = 'project-title';
   title.textContent = t(project, 'title');
 
-  // Description — same localisation lookup
+  // Summary — supports object { no, en } or plain string
   const desc = document.createElement('p');
   desc.className = 'project-description';
-  desc.textContent = t(project, 'description');
+  desc.textContent = t(project, 'summary');
 
   // Tags
   const tagsEl = document.createElement('div');
