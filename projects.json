@@ -1,26 +1,28 @@
 [
   {
-    "id": "redesign-onboarding",
-    "title": "Onboarding Redesign",
-    "title_no": "Redesign av onboarding",
-    "category": "UX Research & Design",
-    "year": "2025",
-    "description": "Redesigned the onboarding flow for a SaaS product, reducing drop-off by 34% through iterative usability testing and journey mapping.",
-    "description_no": "Redesignet onboarding-flyten for et SaaS-produkt og reduserte frafallet med 34 % gjennom iterativ brukertesting og journey mapping.",
-    "tags": ["User Research", "Prototyping", "Figma"],
-    "thumbnail": "assets/project-1-thumb.png",
-    "link": "projects/redesign-onboarding.html"
+    "id": "ung-debatt",
+    "course": "MCB201",
+    "title": {
+      "no": "Ung Debatt",
+      "en": "Youth Debate"
+    },
+    "category": "UX/UI & Systems Thinking",
+    "summary": {
+      "no": "En debatt- og nyhetsplattform for unge som låner det engasjerende videoformatet fra TikTok, men fjerner de manipulerende algoritmene. Gjennom omfattende innsiktsarbeid designet vi en løsning som gir unge en trygg debattarena, og norske mediehus en transparent plattform med full redaksjonell kontroll.",
+      "en": "A debate and news platform for youth that adopts the engaging video format of TikTok, but removes manipulative algorithms. Through extensive user research, we designed a solution that provides a safe arena for young users and gives Norwegian media houses a transparent platform with full editorial control."
+    }
   },
   {
-    "id": "design-system",
-    "title": "Design System Foundation",
-    "title_no": "Designsystem fra bunnen",
-    "category": "UI Design",
-    "year": "2024",
-    "description": "Built a scalable component library and token-based design system from scratch, aligning cross-functional teams across web and mobile platforms.",
-    "description_no": "Bygget et skalerbart komponentbibliotek og tokenbasert designsystem fra bunnen, og samkjørte tverrfaglige team på tvers av web og mobil.",
-    "tags": ["Design Systems", "Tokens", "Figma"],
-    "thumbnail": "assets/project-2-thumb.png",
-    "link": "projects/design-system.html"
+    "id": "bachelor-cdn",
+    "course": "MIX250",
+    "title": {
+      "no": "3D-galleri for Senter for Digitale Fortellinger",
+      "en": "3D Gallery for Center for Digital Narrative"
+    },
+    "category": "3D & Interaction Design",
+    "summary": {
+      "no": "Bachelorprosjekt for UiB og CDN. Et interaktivt 3D-galleri som samler og formidler kompleks elektronisk litteratur og forskning. I min individuelle oppgave i forbindelse med dette prosjektet utforsket jeg konvensjonen om at alt digitalt design må være 'sømløst', ved å bruke bevisst positiv friksjon i interaksjonen for å trigge brukernes nysgjerrighet og gi rom for refleksjon.",
+      "en": "Bachelor thesis project for UiB and CDN. An interactive 3D gallery designed to communicate complex electronic literature and research. In my individual thesis for this project, I explored the convention that all digital design must be 'seamless', using intentional positive friction to spark curiosity and encourage deeper reflection."
+    }
   }
 ]
