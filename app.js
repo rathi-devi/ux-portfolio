@@ -263,44 +263,45 @@ function showError() {
 // THREE.JS — PROCEDURAL TREE
 // ════════════════════════════════════════════════════════════
 
+// ─── Growth state ────────────────────────────────────────────
+// treeGrowth drives the draw-in animation: 0 = nothing visible, 1 = full tree
+let treeGrowth = 0;
+
 // ─── Setup ───────────────────────────────────────────────────
 function initTree(projectCount) {
   const canvas = document.getElementById('tree-canvas');
   if (!canvas || typeof THREE === 'undefined') return;
 
-  // Orthographic camera: 1 unit = 1 pixel, origin at viewport center
   const W = window.innerWidth;
   const H = window.innerHeight;
 
   scene    = new THREE.Scene();
+  // Orthographic camera: 1 unit = 1 CSS pixel, origin at viewport centre
   camera   = new THREE.OrthographicCamera(-W/2, W/2, H/2, -H/2, 1, 1000);
   camera.position.z = 100;
 
-  clock    = new THREE.Clock();
+  clock = new THREE.Clock();
 
-  // Alpha: true → renderer background is transparent, CSS colour shows through
+  // alpha: true — renderer is transparent so the CSS background shows through
   renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setSize(W, H);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  // Tree lives inside a Group so we can sway the whole thing from the root
   treeGroup = new THREE.Group();
   scene.add(treeGroup);
 
   buildTree(projectCount);
 
   // ── TODO: Mouse interaction ───────────────────────────────
-  // Add a mousemove listener here and map cursor position to a small
-  // treeGroup.rotation.z / treeGroup.rotation.x offset so the tree
-  // leans subtly toward the pointer.
+  // Track cursor and lerp treeGroup.rotation toward it so the tree
+  // leans subtly in the direction of the pointer:
   //
-  // window.addEventListener('mousemove', (e) => {
-  //   const nx = (e.clientX / window.innerWidth  - 0.5) * 2; // –1 … +1
-  //   const ny = (e.clientY / window.innerHeight - 0.5) * 2;
-  //   targetRotX = ny *  0.04;
-  //   targetRotZ = nx * -0.06;
+  // let targetRotZ = 0;
+  // window.addEventListener('mousemove', e => {
+  //   const nx = (e.clientX / window.innerWidth - 0.5) * 2; // –1…+1
+  //   targetRotZ = nx * -0.07;
   // });
-  // Then lerp treeGroup.rotation toward target values in tick().
+  // Then inside tick(): treeGroup.rotation.z += (targetRotZ - treeGroup.rotation.z) * 0.05;
   // ─────────────────────────────────────────────────────────
 
   window.addEventListener('resize', handleResize);
@@ -308,8 +309,8 @@ function initTree(projectCount) {
 }
 
 // ─── Seeded RNG ───────────────────────────────────────────────
-// Same seed → same tree shape on every page load (no randomness surprises).
-// Change the number passed to makeRng() to explore different shapes.
+// Deterministic — same seed → same tree every load.
+// Change the seed value to explore different shapes.
 function makeRng(seed) {
   let s = seed;
   return () => {
@@ -320,77 +321,116 @@ function makeRng(seed) {
 
 // ─── Tree Construction ────────────────────────────────────────
 function buildTree(projectCount) {
-  const rng      = makeRng(42);
-  const segments = []; // flat Vector3 pairs consumed by LineSegments
+  treeGrowth = 0;
 
-  // Trunk base: bottom-center of viewport, slightly below mid-screen
-  const baseX      = 0;
-  const baseY      = -window.innerHeight * 0.46;
-  const trunkLen   = window.innerHeight * 0.27;
+  const rng = makeRng(42);
+  const pts = []; // flat THREE.Vector3 pairs — each pair is one line segment
 
-  branch(segments, rng, baseX, baseY, Math.PI / 2, trunkLen, 0, 6, projectCount);
+  branch(
+    pts, rng,
+    0, -window.innerHeight * 0.45, // trunk base: bottom-centre
+    Math.PI / 2,                   // pointing straight up
+    window.innerHeight * 0.27,     // trunk length = 27 % of viewport height
+    0, 7,                          // start depth, max depth
+    projectCount
+  );
 
-  const geometry = new THREE.BufferGeometry().setFromPoints(segments);
+  const geometry = new THREE.BufferGeometry().setFromPoints(pts);
+  // Hide everything at first — tick() will reveal segments progressively
+  geometry.setDrawRange(0, 0);
 
-  // Dark ink colour, low opacity — reads as delicate on the warm background
+  // Ink-dark colour at low opacity — reads as delicate on the warm background
   const material = new THREE.LineBasicMaterial({
     color:       0x1C1A17,
     transparent: true,
-    opacity:     0.20,
+    opacity:     0.22,
   });
 
-  treeGroup.add(new THREE.LineSegments(geometry, material));
+  const lines = new THREE.LineSegments(geometry, material);
+  treeGroup.add(lines);
+
+  // Store total vertex count so tick() knows when growth is complete
+  treeGroup.userData.totalVerts = pts.length;
 }
 
 // ─── Recursive Branch ─────────────────────────────────────────
-// Each call draws one straight segment then spawns child branches.
+// Each call draws one branch as several sub-segments with slight angular
+// wobble between them — this produces organic curvature without curves.
 //
-// segments    – accumulator array of THREE.Vector3 (pairs = one segment)
+// pts         – Vector3 accumulator (pairs → LineSegments)
 // rng         – seeded random function
-// x, y        – start point of this segment
-// angle       – direction in radians (0 = right, π/2 = up)
-// length      – pixel length of this segment
-// depth       – current recursion depth (0 = trunk base)
-// maxDepth    – stop recursing beyond this
-// projectCount– how many main branches to split into at the first fork
-function branch(segments, rng, x, y, angle, length, depth, maxDepth, projectCount) {
-  if (depth > maxDepth || length < 5) return;
+// x, y        – start point of this branch
+// angle       – current heading in radians (0 = right, π/2 = up)
+// length      – total pixel length of this branch
+// depth       – recursion depth (0 = trunk)
+// maxDepth    – stop when exceeded or segment too short
+// projectCount– splits at depth 0 equal to number of projects
+function branch(pts, rng, x, y, angle, length, depth, maxDepth, projectCount) {
+  if (depth > maxDepth || length < 4) return;
 
-  const ex = x + Math.cos(angle) * length;
-  const ey = y + Math.sin(angle) * length;
+  // More sub-steps near the trunk (smoother curve), fewer at the tips (faster)
+  const steps  = depth < 2 ? 6 : depth < 4 ? 4 : 2;
+  const segLen = length / steps;
+  let   cx = x, cy = y, cAngle = angle;
 
-  segments.push(new THREE.Vector3(x,  y,  0));
-  segments.push(new THREE.Vector3(ex, ey, 0));
+  for (let s = 0; s < steps; s++) {
+    // Angular wobble grows with depth → trunk is nearly straight,
+    // tips are more irregular — mirrors how real trees grow
+    cAngle += (rng() - 0.5) * (0.08 + depth * 0.045);
 
-  // First fork uses project count; all deeper forks split in two
+    const nx = cx + Math.cos(cAngle) * segLen;
+    const ny = cy + Math.sin(cAngle) * segLen;
+
+    pts.push(new THREE.Vector3(cx, cy, 0));
+    pts.push(new THREE.Vector3(nx, ny, 0));
+
+    cx = nx;
+    cy = ny;
+  }
+
+  // Depth 0 splits once per project; all deeper nodes always split in two
   const splits = depth === 0 ? Math.max(2, projectCount) : 2;
-  const spread = depth === 0 ? Math.PI * 0.62 : Math.PI * 0.44;
+  const spread = depth === 0 ? Math.PI * 0.56 : Math.PI * 0.40;
 
   for (let i = 0; i < splits; i++) {
     const t          = splits === 1 ? 0.5 : i / (splits - 1);
-    const childAngle = angle + (t - 0.5) * spread + (rng() - 0.5) * 0.28;
+    const childAngle = cAngle + (t - 0.5) * spread + (rng() - 0.5) * 0.20;
     const childLen   = length * (0.60 + rng() * 0.12);
 
-    branch(segments, rng, ex, ey, childAngle, childLen, depth + 1, maxDepth, projectCount);
+    branch(pts, rng, cx, cy, childAngle, childLen, depth + 1, maxDepth, projectCount);
   }
 }
 
 // ─── Animation Loop ───────────────────────────────────────────
-// One draw call per frame — very cheap. The only motion is a gentle sway
-// applied to the whole treeGroup around its trunk base.
+// Single draw call per frame. Two jobs:
+//   1. Grow the tree by revealing more vertices each frame until complete
+//   2. Apply a gentle two-harmonic sway so the tree feels alive
 function tick() {
   animationId = requestAnimationFrame(tick);
 
-  const t = clock.getElapsedTime();
+  const elapsed = clock.getElapsedTime();
+  const lines   = treeGroup.children[0];
 
-  // Slow organic sway — barely perceptible, just enough to feel alive
-  treeGroup.rotation.z = Math.sin(t * 0.22) * 0.011
-                       + Math.sin(t * 0.37) * 0.005; // second harmonic for realism
+  // ── Growth draw-in ───────────────────────────────────────────
+  // Segments are stored trunk-first (depth-first traversal), so the
+  // animation naturally grows from roots outward — just like a real tree.
+  if (lines && treeGrowth < 1) {
+    treeGrowth += 0.005;                            // full growth in ~200 frames (~3.3 s at 60 fps)
+    const show = Math.floor(treeGrowth * treeGroup.userData.totalVerts);
+    lines.geometry.setDrawRange(0, show - (show % 2)); // keep pairs even
+  }
 
-  // ── TODO: Scroll parallax ─────────────────────────────────
-  // Uncomment to make the tree drift upward as the user scrolls:
+  // ── Organic sway ─────────────────────────────────────────────
+  // Two overlapping sine waves at different frequencies feel less mechanical
+  // than a single wave. Rotation pivot is the treeGroup origin = trunk base.
+  treeGroup.rotation.z =
+    Math.sin(elapsed * 0.20) * 0.013 +
+    Math.sin(elapsed * 0.41) * 0.004;
+
+  // ── TODO: Scroll parallax ────────────────────────────────────
+  // Make the tree drift upward as the user scrolls down:
   // treeGroup.position.y = -window.scrollY * 0.12;
-  // ─────────────────────────────────────────────────────────
+  // ────────────────────────────────────────────────────────────
 
   renderer.render(scene, camera);
 }
@@ -400,7 +440,6 @@ function handleResize() {
   const W = window.innerWidth;
   const H = window.innerHeight;
 
-  // Update camera frustum to match new viewport
   camera.left   = -W / 2;
   camera.right  =  W / 2;
   camera.top    =  H / 2;
@@ -409,7 +448,7 @@ function handleResize() {
 
   renderer.setSize(W, H);
 
-  // Rebuild geometry — branch lengths are viewport-relative
+  // Geometry is viewport-relative so rebuild completely on resize
   treeGroup.clear();
   buildTree(allProjects.length || 2);
 }
