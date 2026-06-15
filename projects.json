@@ -1,0 +1,22 @@
+[
+  {
+    "id": "redesign-onboarding",
+    "title": "Onboarding Redesign",
+    "category": "UX Research & Design",
+    "year": "2025",
+    "description": "Redesigned the onboarding flow for a SaaS product, reducing drop-off by 34% through iterative usability testing and journey mapping.",
+    "tags": ["User Research", "Prototyping", "Figma"],
+    "thumbnail": "assets/project-1-thumb.png",
+    "link": "projects/redesign-onboarding.html"
+  },
+  {
+    "id": "design-system",
+    "title": "Design System Foundation",
+    "category": "UI Design",
+    "year": "2024",
+    "description": "Built a scalable component library and token-based design system from scratch, aligning cross-functional teams across web and mobile platforms.",
+    "tags": ["Design Systems", "Tokens", "Figma"],
+    "thumbnail": "assets/project-2-thumb.png",
+    "link": "projects/design-system.html"
+  }
+]
