@@ -21,33 +21,33 @@
       "en": "A two-sided news and debate platform for young people (16–30) that adopts TikTok's feed format but replaces manipulative algorithms with full user control and editorially curated content. The project was driven by an insight-based pivot: we started with a B2B hypothesis, disproved it through user-centred research, and landed on a B2C platform addressing a genuine market gap."
     },
     "context": {
-      "no": "Tre av fire unge norske førstegangsvelgere (75 %) oppgir at de primært får nyheter fra sosiale medier (Mediatilsynet, 2025). Paradokset er at de bruker TikTok fordi innholdet er gratis og tilgjengelig, men har lav tillit til plattformen og dens algoritmer. Redaktørstyrte medier er til stede på TikTok, men opplever det som et nødvendig onde: de mister kontroll over format, regler og algoritmer. Unge søker en tryggere debattarena — sosiale medier oppleves som for utrygge og uoversiktlige til å ytre seg politisk. Prosjektet ble gjennomført som del av emnet MCB201 Introduksjon til innovasjon og entreprenørskap ved Universitetet i Bergen.",
-      "en": "Three in four young Norwegian first-time voters (75 %) report getting their news primarily from social media (Mediatilsynet, 2025). The paradox is that they use TikTok because content is free and accessible, yet trust the platform and its algorithms very little. Editorial media are present on TikTok but experience it as a necessary evil: they lose control over format, rules, and algorithms. Young people seek a safer debate arena — social media feel too unsafe and chaotic for political expression. This project was carried out as part of the course MCB201 Introduction to Innovation and Entrepreneurship at the University of Bergen."
+      "no": "Tre av fire unge norske førstegangsvelgere (75 %) oppgir at de primært får nyheter fra sosiale medier (Mediatilsynet, 2025). Frustrasjonen er felles: unge vil ha tilgjengelig innhold uten manipulerende algoritmer, mediehusene vil ha kontroll over eget innhold og format. Begge trenger en ny plattform.",
+      "en": "Three in four young Norwegian first-time voters (75 %) get their news primarily from social media (Mediatilsynet, 2025). The frustration is shared: young readers want accessible content without manipulative algorithms, media houses want control over their own content and format. Both need a new platform."
     },
     "pivot": {
-      "no": "Prosjektet startet med en hypotese om å lage et B2B-verktøy som effektiviserte Ung debatts interne arbeidsprosess med rekruttering og siling av unge skribenter. I de første intervjuene med gründeren og en debattjournalist fikk vi den første indikasjonen på at dette kunne være feil spor. Dokumentanalysen av Mediatilsynets rapporter (2025, 2024) og spørreundersøkelsen med 25 respondenter i målgruppen bekreftet dette: behovet i markedet handlet om format og kontroll, ikke intern effektivisering. Vi pivoterte til en B2C-plattform — en tosidig løsning som forener TikToks engasjerende feed-format med redaktørstyrt tillit og algoritmefri personalisering.",
+      "no": "Prosjektet startet med en hypotese om å lage et B2B-verktøy som effektiviserte Ung debatts interne arbeidsprosess med rekruttering av unge skribenter. I de første intervjuene med gründeren og en debattjournalist fikk vi den første indikasjonen på at dette kunne være feil spor. Dokumentanalysen av Mediatilsynets rapporter (2025, 2024) og spørreundersøkelsen med 25 respondenter i målgruppen bekreftet dette: behovet i markedet handlet om format og kontroll, ikke intern effektivisering. Vi pivoterte til en B2C-plattform — en tosidig løsning som forener TikToks engasjerende feed-format med redaktørstyrt tillit og algoritmefri personalisering.",
       "en": "The project began with a hypothesis to build a B2B tool streamlining Ung Debatt's internal workflow for recruiting and filtering young writers. Initial interviews with the founder and a debate journalist gave the first signal that this was the wrong track. Document analysis of Mediatilsynet's reports (2025, 2024) and a survey with 25 respondents in the target group confirmed it: the market need was about format and control, not internal efficiency. We pivoted to a B2C platform — a two-sided solution combining TikTok's engaging feed format with editorial trust and algorithm-free personalisation."
     },
     "design_choices": [
       {
         "title": { "no": "Algoritmefri feed med brukerstyrt personalisering", "en": "Algorithm-free feed with user-controlled personalisation" },
         "desc":  {
-          "no": "I motsetning til TikTok tilbyr appen en feed der brukeren selv velger kilder, temaer og format — uten at en skjult algoritme bestemmer eksponeringen. Unge respondenter i spørreundersøkelsen pekte på mangelen på feedkontroll som en av de største frustrasjonene med sosiale medier (Mediatilsynet, 2025).",
-          "en": "Unlike TikTok, the app offers a feed where users choose their own sources, topics, and format — without a hidden algorithm controlling exposure. Survey respondents identified the lack of feed control as one of the biggest frustrations with social media (Mediatilsynet, 2025)."
+          "no": "I motsetning til TikTok lar appen brukeren selv velge kilder, temaer og format — uten skjult algoritmestyring. Mangel på feedkontroll var en av de største frustrasjonene i undersøkelsen.",
+          "en": "Unlike TikTok, the app lets users choose their own sources, topics, and format — without hidden algorithmic control. Lack of feed control was one of the biggest frustrations identified in the survey."
         }
       },
       {
         "title": { "no": "Engasjement uten likes eller kommentarer", "en": "Engagement without likes or comments" },
         "desc":  {
-          "no": "Appen har verken likerklikk eller kommentarfelt. Debatt skjer ved at brukere svarer med egne video- eller tekstinnlegg. Designvalget er begrunnet i at unge opplever sosiale medier som en uegnet debattarena med stor fare for latterliggjøring og hets (Mediatilsynet, 2025).",
-          "en": "The app has neither likes nor comment fields. Debate happens when users respond with their own video or text posts. This design decision is grounded in the finding that young people experience social media as an unsuitable debate arena due to a high risk of ridicule and harassment (Mediatilsynet, 2025)."
+          "no": "Appen har verken likes eller kommentarfelt — debatt skjer ved at brukere svarer med egne innlegg. Unge opplever sosiale medier som for utrygge til offentlig politisk ytring, og dette valget fjerner mekanismene som driver hets.",
+          "en": "The app has neither likes nor comment fields — debate happens when users respond with their own posts. Young people find social media too unsafe for public political expression, and this removes the mechanics that drive harassment."
         }
       },
       {
         "title": { "no": "Pakkeabonnement under 100 kr/mnd", "en": "Bundle subscription under 100 NOK/month" },
         "desc":  {
-          "no": "Spørreundersøkelsen viste at unge er villige til å betale maksimalt 100 kr/mnd for nyhetsinnhold. Et enkelt avisabonnement (f.eks. Bergens Tidende) koster 229 kr/mnd for unge. Lean Canvas-analysen viste at en pakkemodell med innhold fra flere mediehus — til 50 kr/mnd for 16–30 år — løser betalingsbarrieren og gir bredde sosiale medier ikke kan matche.",
-          "en": "The survey showed young users are willing to pay a maximum of 100 NOK/month for news content. A single newspaper subscription (e.g. Bergens Tidende) costs 229 NOK/month for young people. Lean Canvas analysis showed that a bundle model with content from multiple media houses — at 50 NOK/month for ages 16–30 — removes the payment barrier and provides the breadth social media cannot match."
+          "no": "Spørreundersøkelsen viste maks betalingsvilje på 100 kr/mnd — langt under et enkelt avisabonnement (229 kr/mnd). En pakkemodell til 50 kr/mnd løser betalingsbarrieren og gir innholdsbredde sosiale medier ikke kan matche.",
+          "en": "The survey showed a maximum willingness to pay of 100 NOK/month — well below a single newspaper subscription (229 NOK/month). A bundle model at 50 NOK/month removes the payment barrier and provides the breadth social media cannot match."
         }
       }
     ],
@@ -64,8 +64,8 @@
           "phase": "discover",
           "label": { "no": "Oppdage", "en": "Discover" },
           "body": {
-            "no": "Første fase bestod av metodetriangulering: ustrukturerte intervjuer, dokumentanalyse og spørreundersøkelse. Vi hadde to møter med Ung Debatt og intervjuet gründeren og én debattjournalist i ustrukturert form — et rom der de kunne snakke fritt mens vi stilte oppfølgingsspørsmål. Vi hadde også dialog på mail. I tillegg analyserte vi Mediatilsynets rapporter 'Feed, Fornuft og Følelser' (2025) og 'Barn og medier' (2024) som ga oss kvantitative og kvalitative data om den yngste delen av målgruppen (16–21 år). Alt arbeid ble organisert i et FigJam Board for felles analysering og syntetisering.",
-            "en": "The first phase used method triangulation: unstructured interviews, document analysis, and a survey. We held two meetings with Ung Debatt and interviewed the founder and one debate journalist in an unstructured format — a space for them to speak freely while we asked follow-up questions. We also communicated by email. We additionally analysed Mediatilsynet's reports 'Feed, Fornuft og Følelser' (2025) and 'Barn og medier' (2024), which provided quantitative and qualitative data about the youngest segment of the target group (ages 16–21). All work was organised in a FigJam board for collaborative analysis and synthesis."
+            "no": "Metodetriangulering: to ustrukturerte intervjuer med Ung Debatt (gründer og debattjournalist), dokumentanalyse av Mediatilsynets rapporter (2025, 2024) og en spørreundersøkelse med 25 respondenter i målgruppen. Alt arbeid ble syntetisert i et felles FigJam Board.",
+            "en": "Method triangulation: two unstructured interviews with Ung Debatt (founder and debate journalist), document analysis of Mediatilsynet's reports (2025, 2024), and a survey with 25 respondents in the target group. All work was synthesised in a shared FigJam board."
           },
           "images": [
             {
@@ -80,8 +80,8 @@
           "phase": "define",
           "label": { "no": "Definere", "en": "Define" },
           "body": {
-            "no": "Vi utformet en spørreundersøkelse i Google Forms rettet mot unge (16–30 år), som ble besvart av 25 personer. Undersøkelsen kombinerte enkle lukkede spørsmål med noen åpne for kvalitativ innsikt. Basert på innsamlet data utviklet vi en datadrevet persona — Tobias, 22 år, sykepleierstudent — og plasserte ham i kontekstscenarioer for å utforske behov og mulige løsninger. Videre brukte vi SWOT-analyse og Lean Canvas for å vurdere forretningspotensialet og modellere verdiforslaget. Det var i overgangen mellom oppdage og definere at vi innså at dataene ikke stemte med vår opprinnelige hypotese.",
-            "en": "We designed a Google Forms survey targeting young people (16–30), collecting 25 responses. The survey combined simple closed questions with a few open-ended ones for qualitative insight. Based on collected data, we developed a data-driven persona — Tobias, 22, nursing student — and placed him in context scenarios to explore needs and potential solutions. We also used SWOT analysis and a Lean Canvas to assess business potential and model the value proposition. It was in the transition between discover and define that we realised the data contradicted our original hypothesis."
+            "no": "Basert på dataene utviklet vi en datadrevet persona — Tobias, 22 år, sykepleierstudent — og testet ham i kontekstscenarioer. Vi modellerte forretningspotensialet med SWOT-analyse og Lean Canvas. Det var her vi innså at dataene motsa hypotesen vår.",
+            "en": "Based on the data we developed a data-driven persona — Tobias, 22, nursing student — and tested him in context scenarios. We modelled business potential using SWOT analysis and Lean Canvas. This is where we realised the data contradicted our hypothesis."
           },
           "images": [
             {
@@ -96,8 +96,8 @@
           "phase": "develop",
           "label": { "no": "Utvikle", "en": "Develop" },
           "body": {
-            "no": "Vi bygget først en Lo-Fidelity prototype i Figma for å teste verdiforslaget raskt. Deretter ble de viktigste kvalitetene i løsningen utarbeidet til en Hi-Fidelity prototype med realistisk innhold. Prototypen ble testet av tre medstudenter i målgruppen (16–30 år) i en Think-Aloud brukertest med testguide og scenarier. Funnene var konkrete: feed-formatet og TikTok-inspirerte ikoner ble umiddelbart gjenkjent, mens nye funksjoner som format-filter og autoplay-kontroll var vanskelige å oppdage. Ikoner som avvek fra kjente sosiale medier-konvensjoner — f.eks. at hjem-knappen ikke var et hus-ikon — skapte forvirring.",
-            "en": "We first built a Lo-Fidelity prototype in Figma to quickly test the value proposition. The most important qualities were then developed into a Hi-Fidelity prototype with realistic content. The prototype was tested by three fellow students in the target group (ages 16–30) in a Think-Aloud usability test with a test guide and scenarios. Findings were concrete: the feed format and TikTok-inspired icons were immediately recognised, while new functions such as the format filter and autoplay control were hard to discover. Icons that deviated from familiar social media conventions — e.g. a home button without a house icon — caused confusion."
+            "no": "Vi itererte fra Lo-Fi til Hi-Fi prototype i Figma, og testet med tre medstudenter i en Think-Aloud brukertest. Funnene var konkrete: feed-formatet ble umiddelbart gjenkjent, men format-filter og autoplay-kontroll var vanskelige å oppdage. Ikoner som brøt med sosiale medier-konvensjoner skapte forvirring — vi justerte prototypen basert på funnene.",
+            "en": "We iterated from Lo-Fi to Hi-Fi prototype in Figma, then tested with three fellow students in a Think-Aloud usability test. Findings were concrete: the feed format was immediately recognised, but the format filter and autoplay control were hard to discover. Icons that broke with social media conventions caused confusion — we revised the prototype based on the findings."
           },
           "images": [
             {
@@ -112,8 +112,8 @@
           "phase": "deliver",
           "label": { "no": "Levere", "en": "Deliver" },
           "body": {
-            "no": "I den siste fasen holdt vi en fem minutters live pitch på StudentDemo på Media City Bergen, foran medstudenter og et dommerpanel med fagpersoner. Vi presenterte verdiforslaget med en oppdatert Hi-Fi prototype der endringene fra brukertesten var implementert. Ung Debatt-appen vant StudentDemo. Dommerne fremhevet særlig at løsningen adresserer et reelt samfunnsproblem. I tillegg presenterte vi prosjektet på Medielærerseminaret 2026.",
-            "en": "In the final phase we delivered a five-minute live pitch at the StudentDemo at Media City Bergen, in front of fellow students and a judging panel of industry professionals. We presented the value proposition using an updated Hi-Fi prototype incorporating changes from the usability test. The Ung Debatt app won the StudentDemo. Judges particularly highlighted that the solution addresses a genuine societal problem. We also presented the project at the Medielærerseminaret 2026."
+            "no": "En fem minutters live pitch på StudentDemo, Media City Bergen — med en oppdatert Hi-Fi prototype der brukertestfunnene var implementert. Ung Debatt-appen vant. Dommerne fremhevet særlig at løsningen adresserer et reelt samfunnsproblem.",
+            "en": "A five-minute live pitch at the StudentDemo at Media City Bergen — presenting an updated Hi-Fi prototype incorporating usability test findings. The Ung Debatt app won. Judges particularly highlighted the solution's genuine societal impact."
           },
           "images": [
             {
@@ -130,24 +130,24 @@
           "number": "01",
           "heading": { "no": "Format og kontroll — ikke tekst — er det unge savner", "en": "Format and control — not text — is what young people lack" },
           "body":    {
-            "no": "Dokumentanalysen og spørreundersøkelsen pekte tydelig på tre udekkede behov: format (unge foretrekker video i feed), kontroll (unge og mediehus misliker algoritmer de ikke kan styre) og bredde (unge vil ha innhold fra flere aviser, men enkeltabonnementer er for dyre). En effektivisering av tekstproduksjon alene — vår opprinnelige hypotese — ville ikke løst noen av disse behovene.",
-            "en": "Document analysis and the survey clearly pointed to three unmet needs: format (young people prefer video in a feed), control (young people and media houses dislike algorithms they cannot manage), and breadth (young people want content from multiple papers, but individual subscriptions are too expensive). Streamlining text production alone — our original hypothesis — would not have addressed any of these needs."
+            "no": "Dataene pekte på tre udekkede behov: format (video i feed), kontroll (algoritmefrihet) og bredde (innhold fra flere aviser uten dyre enkeltabonnementer). Vår opprinnelige hypotese om å effektivisere tekstproduksjon ville ikke løst ett eneste av disse.",
+            "en": "The data pointed to three unmet needs: format (video in a feed), control (freedom from algorithms), and breadth (content from multiple papers without expensive individual subscriptions). Our original hypothesis about streamlining text production would not have addressed a single one of these."
           }
         },
         {
           "number": "02",
           "heading": { "no": "TikTok er et nødvendig onde — ikke et valg", "en": "TikTok is a necessary evil — not a choice" },
           "body":    {
-            "no": "Unge bruker TikTok til nyheter fordi det er gratis og lett tilgjengelig — ikke fordi de stoler på plattformen. Mediatilsynet (2025) finner at lav tillit til sosiale medier begrunnes med manglende kontroll over feeden og at algoritmene eksponerer dem for innhold de ikke ønsker. Unge skammer seg over tidsbruken og prøver aktivt å overstyre algoritmene. Det er et umettet behov for et troverdig, billig alternativ.",
-            "en": "Young people use TikTok for news because it is free and easily accessible — not because they trust the platform. Mediatilsynet (2025) finds that low trust in social media stems from a lack of feed control and algorithms exposing them to unwanted content. Young people feel shame about their usage and actively try to override the algorithms. There is an unmet need for a credible, affordable alternative."
+            "no": "Unge bruker TikTok til nyheter fordi det er gratis — ikke fordi de stoler på det. Mediatilsynet (2025) finner at lav tillit skyldes manglende feedkontroll og uønsket algoritmisk eksponering. Det er et umettet behov for et troverdig, billig alternativ.",
+            "en": "Young people use TikTok for news because it's free — not because they trust it. Mediatilsynet (2025) finds that low trust stems from lack of feed control and unwanted algorithmic exposure. There is an unmet need for a credible, affordable alternative."
           }
         },
         {
           "number": "03",
           "heading": { "no": "God onboarding er avgjørende selv i et kjent format", "en": "Good onboarding is critical even in a familiar format" },
           "body":    {
-            "no": "Brukertesten med tre deltakere viste at selv om feed-formatet ble umiddelbart gjenkjent (positivt), var nye funksjoner — format-filter og autoplay-kontroll — vanskelig å oppdage uten veiledning. Ikoner som brøt med sosiale medier-konvensjoner skapte forvirring. Funnet ledet til konkrete endringer i prototypen: bedre synliggjøring av unike funksjoner og mer intuitive ikoner.",
-            "en": "The usability test with three participants showed that while the feed format was immediately recognised (positive), new functions — format filter and autoplay control — were difficult to discover without guidance. Icons that broke with social media conventions caused confusion. The finding led to concrete changes in the prototype: better visibility of unique features and more intuitive icons."
+            "no": "Brukertesten viste at feed-formatet ble umiddelbart gjenkjent, men nye funksjoner var vanskelige å oppdage uten veiledning. Ikoner som brøt med sosiale medier-konvensjoner skapte forvirring — og ledet til konkrete endringer i prototypen.",
+            "en": "The usability test showed the feed format was immediately recognised, but new functions were difficult to discover without guidance. Icons that broke with social media conventions caused confusion — and led to concrete revisions in the prototype."
           }
         }
       ],
@@ -164,8 +164,8 @@
         { "src": "assets/ung-debatt/screen-profile.png",    "placeholder": { "no": "Min profil — personalisering og abonnement",            "en": "My profile — personalisation and subscription" },           "ratio": "9/16" }
       ],
       "outcome": {
-        "no": "Ung Debatt-appen vant StudentDemo på Media City Bergen høst 2025, og ble løftet frem av dommerne som en samfunnsnyttig løsning på et reelt problem. Prosjektet ble også presentert på Medielærerseminaret 2026. Den individuelle refleksjonsoppgaven analyserte utviklingsprosessen under tittelen 'Innsikt som katalysator' og viste årsakssammenhengen mellom brukersentrert metode og den strategiske pivoten.",
-        "en": "The Ung Debatt app won the StudentDemo at Media City Bergen in autumn 2025 and was highlighted by the judges as a socially valuable solution to a real problem. The project was also presented at the Medielærerseminaret 2026. The individual reflection paper analysed the development process under the title 'Insight as Catalyst', demonstrating the causal link between user-centred method and strategic pivot."
+        "no": "Ung Debatt-appen vant StudentDemo på Media City Bergen høst 2025 — et panel av bransjeeksperter fremhevet at løsningen adresserer et reelt samfunnsproblem. Prosjektet ble invitert til å presentere på Medielærerseminaret 2026.",
+        "en": "The Ung Debatt app won the StudentDemo at Media City Bergen, autumn 2025 — a panel of industry experts highlighted the solution's genuine societal value. The project was invited to present at Medielærerseminaret 2026."
       }
     }
   },

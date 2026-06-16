@@ -683,6 +683,15 @@ function renderCaseStudy(project) {
 
       ${contextHtml}
 
+      ${outcomeHtml}
+
+      <section class="case-section case-screens">
+        <h2>${L.screens}</h2>
+        <div class="screens-grid">${screensHtml}</div>
+      </section>
+
+      ${pivotHtml}
+
       <section class="case-section case-process">
         <h2>${L.process}</h2>
         <p class="section-intro">${L.diamond}</p>
@@ -694,19 +703,10 @@ function renderCaseStudy(project) {
         ${insightsHtml}
       </section>
 
-      ${pivotHtml}
-
       <section class="case-section case-choices">
         <h2>${L.choices}</h2>
         ${choicesHtml}
       </section>
-
-      <section class="case-section case-screens">
-        <h2>${L.screens}</h2>
-        <div class="screens-grid">${screensHtml}</div>
-      </section>
-
-      ${outcomeHtml}
 
     </div>`;
 }
