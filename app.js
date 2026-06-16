@@ -125,7 +125,8 @@ async function loadProjects() {
 
     buildFilterButtons();
     renderProjects(allProjects);
-    initTree(allProjects.length);       // branches = number of projects
+    initTree(allProjects.length);
+    initRouter();                       // start hash router after data is ready
   } catch (err) {
     showError();
     console.error('Could not load projects.json:', err);
@@ -188,9 +189,13 @@ function createCard(project) {
   card.setAttribute('tabindex', '0');
   card.setAttribute('aria-label', `View project: ${t(project, 'title')}`);
 
-  // Navigate on click or Enter key
+  // Navigate: case study view if data exists, external link otherwise
   const navigate = () => {
-    if (project.link) window.location.href = project.link;
+    if (project.case) {
+      window.location.hash = `project/${project.id}`;
+    } else if (project.link) {
+      window.location.href = project.link;
+    }
   };
   card.addEventListener('click', navigate);
   card.addEventListener('keydown', e => { if (e.key === 'Enter') navigate(); });
@@ -235,9 +240,17 @@ function createCard(project) {
   desc.className = 'project-description';
   desc.textContent = t(project, 'summary');
 
-  // Tags
+  // Tagline badge — shown if project has a tagline (e.g. award)
   const tagsEl = document.createElement('div');
   tagsEl.className = 'project-tags';
+
+  if (project.tagline) {
+    const badge = document.createElement('span');
+    badge.className = 'tag tag--award';
+    badge.textContent = ls(project.tagline);
+    tagsEl.appendChild(badge);
+  }
+
   (project.tags ?? []).forEach(tag => {
     const span = document.createElement('span');
     span.className = 'tag';
@@ -263,9 +276,17 @@ function showError() {
 // THREE.JS — PROCEDURAL TREE
 // ════════════════════════════════════════════════════════════
 
-// ─── Growth state ────────────────────────────────────────────
-// treeGrowth drives the draw-in animation: 0 = nothing visible, 1 = full tree
-let treeGrowth = 0;
+// ─── Animation state ─────────────────────────────────────────
+let treeGrowth    = 0;    // 0 → 1, drives the draw-in animation
+let restPositions = null; // Float32Array — base vertex positions (before sway)
+let vertexDepths  = null; // Float32Array — branch depth per vertex
+
+const MAX_DEPTH = 7;
+
+// Ink and background colours in linear 0–1 space.
+// Tips blend toward BG, which reads as both fading and thinning.
+const INK = { r: 0.110, g: 0.102, b: 0.090 }; // #1C1A17
+const BG  = { r: 0.976, g: 0.973, b: 0.965 }; // #F9F8F6
 
 // ─── Setup ───────────────────────────────────────────────────
 function initTree(projectCount) {
@@ -275,14 +296,11 @@ function initTree(projectCount) {
   const W = window.innerWidth;
   const H = window.innerHeight;
 
-  scene    = new THREE.Scene();
-  // Orthographic camera: 1 unit = 1 CSS pixel, origin at viewport centre
-  camera   = new THREE.OrthographicCamera(-W/2, W/2, H/2, -H/2, 1, 1000);
+  scene  = new THREE.Scene();
+  camera = new THREE.OrthographicCamera(-W/2, W/2, H/2, -H/2, 1, 1000);
   camera.position.z = 100;
+  clock  = new THREE.Clock();
 
-  clock = new THREE.Clock();
-
-  // alpha: true — renderer is transparent so the CSS background shows through
   renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setSize(W, H);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -293,24 +311,20 @@ function initTree(projectCount) {
   buildTree(projectCount);
 
   // ── TODO: Mouse interaction ───────────────────────────────
-  // Track cursor and lerp treeGroup.rotation toward it so the tree
-  // leans subtly in the direction of the pointer:
-  //
   // let targetRotZ = 0;
   // window.addEventListener('mousemove', e => {
-  //   const nx = (e.clientX / window.innerWidth - 0.5) * 2; // –1…+1
-  //   targetRotZ = nx * -0.07;
+  //   targetRotZ = ((e.clientX / window.innerWidth) - 0.5) * -0.10;
   // });
-  // Then inside tick(): treeGroup.rotation.z += (targetRotZ - treeGroup.rotation.z) * 0.05;
+  // Inside tick(): treeGroup.rotation.z += (targetRotZ - treeGroup.rotation.z) * 0.04;
   // ─────────────────────────────────────────────────────────
 
   window.addEventListener('resize', handleResize);
   tick();
 }
 
-// ─── Seeded RNG ───────────────────────────────────────────────
-// Deterministic — same seed → same tree every load.
-// Change the seed value to explore different shapes.
+// ─── Seeded RNG ──────────────────────────────────────────────
+// Deterministic: same seed → same tree every reload.
+// Change the seed to explore different shapes.
 function makeRng(seed) {
   let s = seed;
   return () => {
@@ -323,114 +337,136 @@ function makeRng(seed) {
 function buildTree(projectCount) {
   treeGrowth = 0;
 
-  const rng = makeRng(42);
-  const pts = []; // flat THREE.Vector3 pairs — each pair is one line segment
+  const rng    = makeRng(42);
+  const pts    = []; // THREE.Vector3 pairs — each pair = one line segment
+  const depths = []; // depth value mirroring pts, one entry per Vector3
 
-  branch(
-    pts, rng,
-    0, -window.innerHeight * 0.45, // trunk base: bottom-centre
-    Math.PI / 2,                   // pointing straight up
-    window.innerHeight * 0.27,     // trunk length = 27 % of viewport height
-    0, 7,                          // start depth, max depth
-    projectCount
+  branch(pts, depths, rng,
+    0, -window.innerHeight * 0.45, // trunk base: bottom-centre of viewport
+    Math.PI / 2,                   // heading straight up
+    window.innerHeight * 0.27,     // trunk length: 27 % of viewport height
+    0, projectCount
   );
 
-  const geometry = new THREE.BufferGeometry().setFromPoints(pts);
-  // Hide everything at first — tick() will reveal segments progressively
-  geometry.setDrawRange(0, 0);
+  const N = pts.length;
 
-  // Ink-dark colour at low opacity — reads as delicate on the warm background
-  const material = new THREE.LineBasicMaterial({
-    color:       0x1C1A17,
-    transparent: true,
-    opacity:     0.22,
+  // ── Store rest positions for per-vertex sway animation ───
+  restPositions = new Float32Array(N * 3);
+  pts.forEach((v, i) => {
+    restPositions[i * 3]     = v.x;
+    restPositions[i * 3 + 1] = v.y;
+  });
+  vertexDepths = new Float32Array(depths);
+
+  // ── Vertex colours — depth-based fade ────────────────────
+  // Trunk: ink-dark. Tips: close to paper background.
+  // Effect reads as both increasing transparency and thinning lines —
+  // elegant workaround since WebGL doesn't support linewidth > 1.
+  const colorsArr = new Float32Array(N * 3);
+  depths.forEach((d, i) => {
+    const t = Math.pow(d / MAX_DEPTH, 1.8); // non-linear: tips fade faster
+    colorsArr[i * 3]     = INK.r + (BG.r - INK.r) * t;
+    colorsArr[i * 3 + 1] = INK.g + (BG.g - INK.g) * t;
+    colorsArr[i * 3 + 2] = INK.b + (BG.b - INK.b) * t;
   });
 
-  const lines = new THREE.LineSegments(geometry, material);
-  treeGroup.add(lines);
+  // ── Build geometry ────────────────────────────────────────
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(restPositions), 3));
+  geometry.setAttribute('color',    new THREE.BufferAttribute(colorsArr, 3));
+  geometry.setDrawRange(0, 0); // hidden at first; tick() reveals progressively
 
-  // Store total vertex count so tick() knows when growth is complete
-  treeGroup.userData.totalVerts = pts.length;
+  treeGroup.add(new THREE.LineSegments(geometry, new THREE.LineBasicMaterial({ vertexColors: true })));
+  treeGroup.userData.totalVerts = N;
 }
 
 // ─── Recursive Branch ─────────────────────────────────────────
-// Each call draws one branch as several sub-segments with slight angular
-// wobble between them — this produces organic curvature without curves.
-//
-// pts         – Vector3 accumulator (pairs → LineSegments)
-// rng         – seeded random function
-// x, y        – start point of this branch
-// angle       – current heading in radians (0 = right, π/2 = up)
-// length      – total pixel length of this branch
-// depth       – recursion depth (0 = trunk)
-// maxDepth    – stop when exceeded or segment too short
-// projectCount– splits at depth 0 equal to number of projects
-function branch(pts, rng, x, y, angle, length, depth, maxDepth, projectCount) {
-  if (depth > maxDepth || length < 4) return;
+// Draws one branch as several sub-segments with increasing angular wobble,
+// producing organic curvature. Stores depth alongside each vertex so
+// tick() can scale the sway amplitude per vertex.
+function branch(pts, depths, rng, x, y, angle, length, depth, projectCount) {
+  if (depth > MAX_DEPTH || length < 4) return;
 
-  // More sub-steps near the trunk (smoother curve), fewer at the tips (faster)
-  const steps  = depth < 2 ? 6 : depth < 4 ? 4 : 2;
+  const steps  = depth < 2 ? 7 : depth < 4 ? 4 : 2; // smoother near trunk
   const segLen = length / steps;
-  let   cx = x, cy = y, cAngle = angle;
+  let cx = x, cy = y, cAngle = angle;
 
   for (let s = 0; s < steps; s++) {
-    // Angular wobble grows with depth → trunk is nearly straight,
-    // tips are more irregular — mirrors how real trees grow
-    cAngle += (rng() - 0.5) * (0.08 + depth * 0.045);
+    // Wobble grows with depth: trunk is nearly straight, tips curve freely
+    cAngle += (rng() - 0.5) * (0.06 + depth * 0.055);
 
     const nx = cx + Math.cos(cAngle) * segLen;
     const ny = cy + Math.sin(cAngle) * segLen;
 
     pts.push(new THREE.Vector3(cx, cy, 0));
     pts.push(new THREE.Vector3(nx, ny, 0));
+    depths.push(depth, depth); // both endpoints share the branch depth
 
     cx = nx;
     cy = ny;
   }
 
-  // Depth 0 splits once per project; all deeper nodes always split in two
   const splits = depth === 0 ? Math.max(2, projectCount) : 2;
   const spread = depth === 0 ? Math.PI * 0.56 : Math.PI * 0.40;
 
   for (let i = 0; i < splits; i++) {
     const t          = splits === 1 ? 0.5 : i / (splits - 1);
-    const childAngle = cAngle + (t - 0.5) * spread + (rng() - 0.5) * 0.20;
+    const childAngle = cAngle + (t - 0.5) * spread + (rng() - 0.5) * 0.18;
     const childLen   = length * (0.60 + rng() * 0.12);
 
-    branch(pts, rng, cx, cy, childAngle, childLen, depth + 1, maxDepth, projectCount);
+    branch(pts, depths, rng, cx, cy, childAngle, childLen, depth + 1, projectCount);
   }
 }
 
 // ─── Animation Loop ───────────────────────────────────────────
-// Single draw call per frame. Two jobs:
-//   1. Grow the tree by revealing more vertices each frame until complete
-//   2. Apply a gentle two-harmonic sway so the tree feels alive
+// Each frame does two things:
+//   1. Reveal more of the tree (growth draw-in, first ~3 s)
+//   2. Displace every vertex with layered sine noise scaled by depth —
+//      trunk barely moves, tips sway gently like branches in a soft breeze
 function tick() {
   animationId = requestAnimationFrame(tick);
 
   const elapsed = clock.getElapsedTime();
   const lines   = treeGroup.children[0];
+  if (!lines) { renderer.render(scene, camera); return; }
 
-  // ── Growth draw-in ───────────────────────────────────────────
-  // Segments are stored trunk-first (depth-first traversal), so the
-  // animation naturally grows from roots outward — just like a real tree.
-  if (lines && treeGrowth < 1) {
-    treeGrowth += 0.005;                            // full growth in ~200 frames (~3.3 s at 60 fps)
+  // ── 1. Growth draw-in ─────────────────────────────────────
+  if (treeGrowth < 1) {
+    treeGrowth += 0.005; // ~200 frames = 3.3 s at 60 fps
     const show = Math.floor(treeGrowth * treeGroup.userData.totalVerts);
-    lines.geometry.setDrawRange(0, show - (show % 2)); // keep pairs even
+    lines.geometry.setDrawRange(0, show - (show % 2)); // always keep pairs
   }
 
-  // ── Organic sway ─────────────────────────────────────────────
-  // Two overlapping sine waves at different frequencies feel less mechanical
-  // than a single wave. Rotation pivot is the treeGroup origin = trunk base.
-  treeGroup.rotation.z =
-    Math.sin(elapsed * 0.20) * 0.013 +
-    Math.sin(elapsed * 0.41) * 0.004;
+  // ── 2. Per-vertex sway ────────────────────────────────────
+  // amplitude = (depth/MAX_DEPTH)² × 8 px
+  //   → depth 0 (trunk): 0 px movement
+  //   → depth 4 (mid):   ~2.6 px
+  //   → depth 7 (tips):  ~8 px
+  //
+  // phase is derived from rest position so nearby vertices stay coherent
+  // (they share similar phase → they move together, not chaotically).
+  // Two sine layers at different frequencies avoid mechanical regularity.
+  const pos = lines.geometry.attributes.position;
 
-  // ── TODO: Scroll parallax ────────────────────────────────────
-  // Make the tree drift upward as the user scrolls down:
+  for (let i = 0; i < pos.count; i++) {
+    const rx = restPositions[i * 3];
+    const ry = restPositions[i * 3 + 1];
+    const d  = vertexDepths[i];
+
+    const amp   = Math.pow(d / MAX_DEPTH, 2) * 8;
+    const phase = rx * 0.0014 + ry * 0.0009;
+
+    const dx = Math.sin(elapsed * 0.35 + phase)       * amp
+             + Math.sin(elapsed * 0.81 + phase * 2.3) * amp * 0.28;
+    const dy = Math.cos(elapsed * 0.27 + phase * 0.7) * amp * 0.18;
+
+    pos.setXY(i, rx + dx, ry + dy);
+  }
+  pos.needsUpdate = true;
+
+  // ── TODO: Scroll parallax ────────────────────────────────
   // treeGroup.position.y = -window.scrollY * 0.12;
-  // ────────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────────────────
 
   renderer.render(scene, camera);
 }
@@ -447,10 +483,226 @@ function handleResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(W, H);
-
-  // Geometry is viewport-relative so rebuild completely on resize
   treeGroup.clear();
   buildTree(allProjects.length || 2);
+}
+
+// ════════════════════════════════════════════════════════════
+// HASH ROUTER & CASE STUDY RENDERER
+// ════════════════════════════════════════════════════════════
+
+// ─── Router ──────────────────────────────────────────────────
+function initRouter() {
+  window.addEventListener('hashchange', handleRoute);
+  handleRoute();
+}
+
+function handleRoute() {
+  const match = window.location.hash.match(/^#project\/(.+)$/);
+  if (match) {
+    const project = allProjects.find(p => p.id === match[1]);
+    if (project?.case) { showCaseStudy(project); return; }
+  }
+  showHome();
+}
+
+function showHome() {
+  document.getElementById('home-view').hidden = false;
+  document.getElementById('case-view').hidden = true;
+}
+
+function showCaseStudy(project) {
+  document.getElementById('home-view').hidden = true;
+  renderCaseStudy(project);
+  document.getElementById('case-view').hidden = false;
+  window.scrollTo(0, 0);
+}
+
+// ─── Localised string helper ──────────────────────────────────
+// Resolves { no, en } objects or returns plain strings as-is.
+function ls(val) {
+  if (!val) return '';
+  if (typeof val === 'object') return val[currentLang] || val.en || '';
+  return String(val);
+}
+
+// ─── Image / placeholder renderer ────────────────────────────
+function renderFigure(img) {
+  if (!img) return '';
+  const caption = img.caption
+    ? `<figcaption>${escapeHtml(ls(img.caption))}</figcaption>` : '';
+
+  if (img.src) {
+    return `<figure class="case-figure">
+      <img src="${escapeHtml(img.src)}" alt="${escapeHtml(ls(img.placeholder || ''))}" loading="lazy">
+      ${caption}
+    </figure>`;
+  }
+
+  // Placeholder shown until real image is added
+  return `<figure class="case-figure">
+    <div class="img-placeholder" style="aspect-ratio:${img.ratio || '16/9'}">
+      <span>${escapeHtml(ls(img.placeholder))}</span>
+    </div>
+    ${caption}
+  </figure>`;
+}
+
+// ─── Case study page renderer ─────────────────────────────────
+function renderCaseStudy(project) {
+  const c   = project.case;
+  const lng = currentLang;
+
+  // ── Labels ───────────────────────────────────────────────────
+  const L = {
+    back:     lng === 'no' ? '← Tilbake til portefølje' : '← Back to portfolio',
+    context:  lng === 'no' ? 'Kontekst' : 'Context',
+    process:  lng === 'no' ? 'Prosess' : 'Process',
+    diamond:  lng === 'no' ? 'Vi fulgte Dobbeldiamanten som overordnet rammeverk.' : 'We followed the Double Diamond as our overarching framework.',
+    insights: lng === 'no' ? 'Nøkkelfunn' : 'Key Insights',
+    pivot:    lng === 'no' ? 'Den strategiske pivoten' : 'The Strategic Pivot',
+    choices:  lng === 'no' ? 'Designvalg' : 'Design Choices',
+    screens:  lng === 'no' ? 'Hi-Fi-skjermer' : 'Hi-Fi Screens',
+    outcome:  lng === 'no' ? 'Resultat' : 'Outcome',
+  };
+
+  // ── Meta row ────────────────────────────────────────────────
+  const metaLabels = {
+    year:     { no: 'År',       en: 'Year' },
+    role:     { no: 'Rolle',    en: 'Role' },
+    team:     { no: 'Team',     en: 'Team' },
+    duration: { no: 'Varighet', en: 'Duration' },
+    tools:    { no: 'Verktøy',  en: 'Tools' },
+  };
+  const metaHtml = [
+    ['year',     c.meta.year],
+    ['role',     ls(c.meta.role)],
+    ['team',     ls(c.meta.team)],
+    ['duration', ls(c.meta.duration)],
+    ['tools',    (c.meta.tools || []).join(', ')],
+  ].map(([key, val]) => `
+    <div class="case-meta-item">
+      <dt>${escapeHtml(ls(metaLabels[key]))}</dt>
+      <dd>${escapeHtml(String(val))}</dd>
+    </div>`).join('');
+
+  // ── Context (new field, replaces overview) ───────────────────
+  const contextHtml = project.context ? `
+    <section class="case-section case-context">
+      <h2>${L.context}</h2>
+      <p class="context-text">${escapeHtml(ls(project.context))}</p>
+    </section>` : '';
+
+  // ── Double Diamond phases ────────────────────────────────────
+  const processHtml = (c.process || []).map((p, i) => `
+    <div class="case-phase">
+      <div class="phase-label">
+        <span class="phase-number">0${i + 1}</span>
+        <span class="phase-name">${escapeHtml(ls(p.label))}</span>
+      </div>
+      <div class="phase-content">
+        <p>${escapeHtml(ls(p.body))}</p>
+        ${(p.images || []).map(renderFigure).join('')}
+      </div>
+    </div>`).join('');
+
+  // ── Insights ─────────────────────────────────────────────────
+  const insightsHtml = (c.insights || []).map(ins => `
+    <div class="case-insight">
+      <span class="insight-number">${escapeHtml(ins.number)}</span>
+      <div>
+        <h4>${escapeHtml(ls(ins.heading))}</h4>
+        <p>${escapeHtml(ls(ins.body))}</p>
+      </div>
+    </div>`).join('');
+
+  // ── Pivot — uses project.pivot (simple text) + case.pivot_image ──
+  const pivotText  = project.pivot ? ls(project.pivot) : '';
+  const pivotImage = c.pivot_image ? renderFigure(c.pivot_image) : '';
+  const pivotHtml  = pivotText ? `
+    <section class="case-section case-pivot">
+      <h2>${L.pivot}</h2>
+      <div class="pivot-inner">
+        <p>${escapeHtml(pivotText)}</p>
+        ${pivotImage}
+      </div>
+    </section>` : '';
+
+  // ── Design choices (new field) ───────────────────────────────
+  // Falls back to case.solutions if design_choices is absent
+  const choicesHtml = project.design_choices
+    ? project.design_choices.map((ch, i) => `
+        <div class="choice-card">
+          <span class="choice-number">0${i + 1}</span>
+          <div class="choice-body">
+            <h4>${escapeHtml(ls(ch.title))}</h4>
+            <p>${escapeHtml(ls(ch.desc))}</p>
+          </div>
+        </div>`).join('')
+    : (c.solutions || []).map(s => `
+        <div class="choice-card">
+          <div class="choice-body">
+            <h4>${escapeHtml(ls(s.heading))}</h4>
+            <p>${escapeHtml(ls(s.body))}</p>
+          </div>
+        </div>`).join('');
+
+  // ── Hi-Fi screens ────────────────────────────────────────────
+  const screensHtml = (c.screens || []).map(renderFigure).join('');
+
+  // ── Outcome ──────────────────────────────────────────────────
+  const outcomeHtml = c.outcome ? `
+    <section class="case-section">
+      <h2>${L.outcome}</h2>
+      <p class="outcome-text">${escapeHtml(ls(c.outcome))}</p>
+    </section>` : '';
+
+  // ── Assemble page ────────────────────────────────────────────
+  document.getElementById('case-view').innerHTML = `
+    <div class="case-study">
+
+      <nav class="case-nav">
+        <a href="#" class="case-back">${L.back}</a>
+        <span class="case-course">${escapeHtml(project.course || '')}</span>
+      </nav>
+
+      <header class="case-hero">
+        <p class="case-category">${escapeHtml(project.category)}</p>
+        <h1 class="case-title">${escapeHtml(ls(project.title))}</h1>
+        ${project.tagline
+          ? `<p class="case-tagline">${escapeHtml(ls(project.tagline))}</p>`
+          : ''}
+        <dl class="case-meta">${metaHtml}</dl>
+      </header>
+
+      ${contextHtml}
+
+      <section class="case-section case-process">
+        <h2>${L.process}</h2>
+        <p class="section-intro">${L.diamond}</p>
+        ${processHtml}
+      </section>
+
+      <section class="case-section case-insights">
+        <h2>${L.insights}</h2>
+        ${insightsHtml}
+      </section>
+
+      ${pivotHtml}
+
+      <section class="case-section case-choices">
+        <h2>${L.choices}</h2>
+        ${choicesHtml}
+      </section>
+
+      <section class="case-section case-screens">
+        <h2>${L.screens}</h2>
+        <div class="screens-grid">${screensHtml}</div>
+      </section>
+
+      ${outcomeHtml}
+
+    </div>`;
 }
 
 // ─── XSS Guard ───────────────────────────────────────────────
