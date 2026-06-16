@@ -675,6 +675,12 @@ function renderCaseStudy(project) {
         <dl class="case-meta">${metaHtml}</dl>
       </header>
 
+      ${project.hero_image ? `
+      <figure class="case-hero-image">
+        <img src="${escapeHtml(project.hero_image.src)}" alt="${escapeHtml(ls(project.hero_image.caption))}" loading="lazy">
+        ${project.hero_image.caption ? `<figcaption>${escapeHtml(ls(project.hero_image.caption))}</figcaption>` : ''}
+      </figure>` : ''}
+
       ${contextHtml}
 
       <section class="case-section case-process">

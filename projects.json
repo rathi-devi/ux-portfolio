@@ -10,7 +10,11 @@
       "no": "Vinner av StudentDemo på Media City Bergen",
       "en": "Winner of StudentDemo at Media City Bergen"
     },
-    "category": "UX/UI & Strategic Design",
+    "category": "UX Research & Strategy",
+    "hero_image": {
+      "src": "assets/ung-debatt/pitch-studentdemo.jpg",
+      "caption": { "no": "Live pitch på StudentDemo, Media City Bergen", "en": "Live pitch at StudentDemo, Media City Bergen" }
+    },
     "summary": {
       "no": "En tosidig nyhets- og debattplattform for unge (16–30 år) som låner TikToks feed-format, men erstatter de manipulerende algoritmene med full brukerkontroll og redaktørstyrt innhold. Prosjektet er drevet av en innsiktsbasert pivot: vi startet med en B2B-hypotese, avkreftet den gjennom brukersentrert innsiktsarbeid, og endte med en B2C-plattform som svarer på et reelt markedsbehov.",
       "en": "A two-sided news and debate platform for young people (16–30) that adopts TikTok's feed format but replaces manipulative algorithms with full user control and editorially curated content. The project was driven by an insight-based pivot: we started with a B2B hypothesis, disproved it through user-centred research, and landed on a B2C platform addressing a genuine market gap."

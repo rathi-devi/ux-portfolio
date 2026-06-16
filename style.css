@@ -644,6 +644,26 @@ main,
 }
 
 /* ─── Image figures and placeholders ────────────────────────── */
+.case-hero-image {
+  margin-bottom: var(--space-24);
+}
+
+.case-hero-image img {
+  width: 100%;
+  max-height: 520px;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: var(--radius-md);
+  display: block;
+}
+
+.case-hero-image figcaption {
+  font-size: var(--text-xs);
+  color: var(--color-ink-muted);
+  margin-top: var(--space-3);
+  line-height: 1.5;
+}
+
 .case-figure {
   margin-bottom: var(--space-6);
 }
