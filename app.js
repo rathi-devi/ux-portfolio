@@ -706,12 +706,12 @@ function renderCaseStudy(project) {
 
       <section class="case-section case-insights">
         <h2>${L.insights}</h2>
-        ${insightsHtml}
+        <div class="insights-grid">${insightsHtml}</div>
       </section>
 
       <section class="case-section case-choices">
         <h2>${L.choices}</h2>
-        ${choicesHtml}
+        <div class="choices-grid">${choicesHtml}</div>
       </section>
 
     </div>`;

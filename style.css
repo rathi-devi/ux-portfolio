@@ -715,15 +715,19 @@ main,
 }
 
 /* ─── Key insights ──────────────────────────────────────────── */
-.case-insight {
-  display: flex;
-  gap: var(--space-8);
-  padding-block: var(--space-8);
-  border-bottom: 1px solid var(--color-border);
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-8) var(--space-16);
 }
 
-.case-insight:first-of-type { border-top: none; }
-.case-insight:last-of-type  { border-bottom: none; }
+.case-insight {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+}
 
 .insight-number {
   font-size: var(--text-xs);
@@ -852,15 +856,19 @@ main,
 }
 
 /* ─── Design choices ────────────────────────────────────────── */
-.choice-card {
-  display: flex;
-  gap: var(--space-8);
-  padding-block: var(--space-8);
-  border-bottom: 1px solid var(--color-border);
-  align-items: baseline;
+.choices-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-8) var(--space-16);
 }
 
-.choice-card:last-child { border-bottom: none; }
+.choice-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+}
 
 .choice-number {
   font-size: var(--text-xs);
