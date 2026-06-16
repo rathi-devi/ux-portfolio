@@ -532,9 +532,112 @@ function ls(val) {
   return String(val);
 }
 
+// ─── Survey stats renderer ────────────────────────────────────
+function renderSurveyStats(data) {
+  const statsHtml = (data.stats || []).map(s => `
+    <div class="survey-stat">
+      <span class="survey-stat-value">${escapeHtml(s.value)}</span>
+      <span class="survey-stat-label">${escapeHtml(ls(s.label))}</span>
+    </div>`).join('');
+
+  const chart = data.chart;
+  const barsHtml = chart ? (chart.bars || []).map(b => {
+    const pct = Math.round((b.value / b.total) * 100);
+    return `
+    <div class="survey-bar-row">
+      <span class="survey-bar-label">${escapeHtml(ls(b.label))}</span>
+      <div class="survey-bar-track">
+        <div class="survey-bar-fill" style="width:${pct}%"></div>
+      </div>
+      <span class="survey-bar-pct">${pct}%</span>
+    </div>`;
+  }).join('') : '';
+
+  const caption = data.caption
+    ? `<figcaption>${escapeHtml(ls(data.caption))}</figcaption>` : '';
+
+  return `<figure class="case-figure survey-stats-figure">
+    <div class="survey-stats">
+      <div class="survey-stats-row">${statsHtml}</div>
+      ${chart ? `
+      <div class="survey-chart">
+        <p class="survey-chart-title">${escapeHtml(ls(chart.title))}</p>
+        ${barsHtml}
+      </div>` : ''}
+    </div>
+    ${caption}
+  </figure>`;
+}
+
+// ─── Usability findings renderer ─────────────────────────────
+function renderUsabilityFindings(data) {
+  const workedHtml = (data.worked || []).map(item => `
+    <li><span class="uf-icon uf-icon--yes">✓</span>${escapeHtml(ls(item))}</li>`).join('');
+  const revisedHtml = (data.revised || []).map(item => `
+    <li><span class="uf-icon uf-icon--no">✗</span>${escapeHtml(ls(item))}</li>`).join('');
+  const caption = data.caption
+    ? `<figcaption>${escapeHtml(ls(data.caption))}</figcaption>` : '';
+
+  return `<figure class="case-figure survey-stats-figure">
+    <div class="survey-stats usability-findings">
+      <div class="uf-grid">
+        <div class="uf-col">
+          <p class="survey-chart-title">${currentLang === 'no' ? 'Fungerte' : 'Worked'}</p>
+          <ul class="uf-list">${workedHtml}</ul>
+        </div>
+        <div class="uf-col">
+          <p class="survey-chart-title">${currentLang === 'no' ? 'Ble endret' : 'Revised'}</p>
+          <ul class="uf-list">${revisedHtml}</ul>
+        </div>
+      </div>
+    </div>
+    ${caption}
+  </figure>`;
+}
+
+// ─── Pivot visual renderer ────────────────────────────────────
+function renderPivotVisual(data) {
+  const fromItems = data.from.items || [];
+  const toItems   = data.to.items   || [];
+  const count = Math.max(fromItems.length, toItems.length);
+
+  const rowsHtml = Array.from({ length: count }, (_, i) => {
+    const f = fromItems[i] || {};
+    const t = toItems[i]   || {};
+    return `
+      <div class="pv-item">
+        <span class="pv-key">${escapeHtml(ls(f.key || ''))}</span>
+        <span class="pv-value">${escapeHtml(ls(f.value || ''))}</span>
+      </div>
+      <div></div>
+      <div class="pv-item">
+        <span class="pv-key">${escapeHtml(ls(t.key || ''))}</span>
+        <span class="pv-value">${escapeHtml(ls(t.value || ''))}</span>
+      </div>`;
+  }).join('');
+
+  const caption = data.caption
+    ? `<figcaption>${escapeHtml(ls(data.caption))}</figcaption>` : '';
+
+  return `<figure class="case-figure survey-stats-figure">
+    <div class="survey-stats pivot-visual">
+      <div class="pv-grid">
+        <div class="pv-col-label">${escapeHtml(ls(data.from.label))}</div>
+        <div class="pv-arrow">→</div>
+        <div class="pv-col-label">${escapeHtml(ls(data.to.label))}</div>
+        ${rowsHtml}
+      </div>
+    </div>
+    ${caption}
+  </figure>`;
+}
+
 // ─── Image / placeholder renderer ────────────────────────────
 function renderFigure(img) {
   if (!img) return '';
+  if (img.type === 'survey-stats') return renderSurveyStats(img);
+  if (img.type === 'usability-findings') return renderUsabilityFindings(img);
+  if (img.type === 'pivot-visual') return renderPivotVisual(img);
   const caption = img.caption
     ? `<figcaption>${escapeHtml(ls(img.caption))}</figcaption>` : '';
 

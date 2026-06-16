@@ -18,37 +18,37 @@
       "caption": { "no": "Hi-Fi prototype — Ung Debatt Appen", "en": "Hi-Fi prototype — Youth Debate App" }
     },
     "summary": {
-      "no": "Unge får nyheter fra TikTok, men stoler ikke på det. Vi designet alternativet.",
-      "en": "Young people get their news from TikTok, but don't trust it. We designed the alternative."
+      "no": "Unge får nyheter fra TikTok, men stoler ikke på det. Vi designet alternativet — fra brukerinnsikt til Hi-Fi prototype.",
+      "en": "Young people get their news from TikTok, but don't trust it. We designed the alternative — from user insight to Hi-Fi prototype."
     },
     "context": {
       "no": "Tre av fire unge norske førstegangsvelgere (75 %) oppgir at de primært får nyheter fra sosiale medier (Mediatilsynet, 2025). Frustrasjonen er felles: unge vil ha tilgjengelig innhold uten manipulerende algoritmer, mediehusene vil ha kontroll over eget innhold og format. Begge trenger en ny plattform.",
       "en": "Three in four young Norwegian first-time voters (75 %) get their news primarily from social media (Mediatilsynet, 2025). The frustration is shared: young readers want accessible content without manipulative algorithms, media houses want control over their own content and format. Both need a new platform."
     },
     "pivot": {
-      "no": "Prosjektet startet med en hypotese om å lage et B2B-verktøy som effektiviserte Ung debatts interne arbeidsprosess med rekruttering og formidling av unge skribenter og meninger. I de første intervjuene med gründeren og en debattjournalist fikk vi den første indikasjonen på at dette kunne være feil spor. Dokumentanalysen av Mediatilsynets rapporter (2025, 2024) og spørreundersøkelsen med 25 respondenter i målgruppen bekreftet dette: behovet i markedet handlet om format og kontroll. Vi pivoterte til en B2C-plattform — en tosidig løsning som forener TikToks engasjerende feed-format med redaktørstyrt tillit og algoritmefri personalisering.",
-      "en": "The project began with a hypothesis to build a B2B tool streamlining Ung Debatt's internal workflow for recruiting and filtering young writers. Initial interviews with the founder and a debate journalist gave the first signal that this was the wrong track. Document analysis of Mediatilsynet's reports (2025, 2024) and a survey with 25 respondents in the target group confirmed it: the market need was about format and control. We pivoted to a B2C platform — a two-sided solution combining TikTok's engaging feed format with editorial trust and algorithm-free personalisation."
+      "no": "Prosjektet startet som et B2B-verktøy for å effektivisere Ung Debatts rekruttering av skribenter. Dokumentanalysen og spørreundersøkelsen motsa hypotesen — behovet handlet om format og kontroll, ikke intern effektivisering. Vi pivoterte til en tosidig B2C-plattform.",
+      "en": "The project started as a B2B tool to streamline Ung Debatt's recruitment of writers. Document analysis and the survey disproved the hypothesis — the need was about format and control, not internal efficiency. We pivoted to a two-sided B2C platform."
     },
     "design_choices": [
       {
         "title": { "no": "Algoritmefri feed med brukerstyrt personalisering", "en": "Algorithm-free feed with user-controlled personalisation" },
         "desc":  {
-          "no": "I motsetning til TikTok lar appen brukeren selv velge kilder, temaer og format — uten skjult algoritmestyring. Mangel på feedkontroll var en av de største frustrasjonene i undersøkelsen.",
-          "en": "Unlike TikTok, the app lets users choose their own sources, topics, and format — without hidden algorithmic control. Lack of feed control was one of the biggest frustrations identified in the survey."
+          "no": "Brukeren velger selv kilder, temaer og format — ingen skjult algoritmestyring.",
+          "en": "Users choose their own sources, topics, and format — no hidden algorithmic control."
         }
       },
       {
         "title": { "no": "Engasjement uten likes eller kommentarer", "en": "Engagement without likes or comments" },
         "desc":  {
-          "no": "Appen har verken likes eller kommentarfelt — debatt skjer ved at brukere svarer med egne innlegg. Unge opplever sosiale medier som for utrygge til offentlig politisk ytring, og dette valget fjerner mekanismene som driver hets.",
-          "en": "The app has neither likes nor comment fields — debate happens when users respond with their own posts. Young people find social media too unsafe for public political expression, and this removes the mechanics that drive harassment."
+          "no": "Ingen likes eller kommentarfelt — debatt skjer ved at brukere svarer med egne innlegg.",
+          "en": "No likes or comment fields — debate happens when users respond with their own posts."
         }
       },
       {
         "title": { "no": "Pakkeabonnement under 100 kr/mnd", "en": "Bundle subscription under 100 NOK/month" },
         "desc":  {
-          "no": "Spørreundersøkelsen viste maks betalingsvilje på 100 kr/mnd — langt under et enkelt avisabonnement (229 kr/mnd). En pakkemodell til 50 kr/mnd løser betalingsbarrieren og gir innholdsbredde sosiale medier ikke kan matche.",
-          "en": "The survey showed a maximum willingness to pay of 100 NOK/month — well below a single newspaper subscription (229 NOK/month). A bundle model at 50 NOK/month removes the payment barrier and provides the breadth social media cannot match."
+          "no": "Undersøkelsen viste maks betalingsvilje på 100 kr/mnd. En pakkemodell til 50 kr/mnd løser betalingsbarrieren.",
+          "en": "The survey showed a max willingness to pay of 100 NOK/month. A bundle model at 50 NOK/month removes the payment barrier."
         }
       }
     ],
@@ -70,10 +70,21 @@
           },
           "images": [
             {
-              "src": "assets/ung-debatt/figjam-board.png",
-              "placeholder": { "no": "FigJam Board — analyser, planlegging og innsikt", "en": "FigJam Board — analysis, planning and insight" },
-              "caption":     { "no": "Arbeidsboard i FigJam brukt til å organisere og syntetisere data fra alle innsamlingsmetodene", "en": "FigJam working board used to organise and synthesise data from all collection methods" },
-              "ratio": "16/9"
+              "type": "survey-stats",
+              "caption": { "no": "Spørreundersøkelse — 25 respondenter, november 2025", "en": "Survey — 25 respondents, November 2025" },
+              "stats": [
+                { "value": "25",     "label": { "no": "respondenter",                         "en": "respondents" } },
+                { "value": "2.6/5",  "label": { "no": "tillit til nyheter på sosiale medier", "en": "trust in social media news" } },
+                { "value": "~100 kr","label": { "no": "maks betalingsvilje per mnd",          "en": "max willingness to pay / month" } }
+              ],
+              "chart": {
+                "title": { "no": "Foretrukket nyhetsformat", "en": "Preferred news format" },
+                "bars": [
+                  { "label": { "no": "Tekst",    "en": "Text" },    "value": 11, "total": 25 },
+                  { "label": { "no": "Video",    "en": "Video" },   "value": 8,  "total": 25 },
+                  { "label": { "no": "Nøytral",  "en": "Neutral" }, "value": 6,  "total": 25 }
+                ]
+              }
             }
           ]
         },
@@ -102,10 +113,23 @@
           },
           "images": [
             {
-              "src": "assets/ung-debatt/prototype.png",
+              "src": "assets/ung-debatt/prototype-overview.png",
               "placeholder": { "no": "Hi-Fi prototype — fullstendig skjermflyt", "en": "Hi-Fi prototype — complete screen flow" },
               "caption":     { "no": "Hi-Fidelity prototype i Figma — fullstendig skjermflyt med realistisk innhold", "en": "Hi-Fidelity prototype in Figma — complete screen flow with realistic content" },
               "ratio": "16/9"
+            },
+            {
+              "type": "usability-findings",
+              "caption": { "no": "Think-Aloud brukertest — 3 deltakere", "en": "Think-Aloud usability test — 3 participants" },
+              "worked": [
+                { "no": "Feed-format gjenkjent umiddelbart", "en": "Feed format recognised immediately" },
+                { "no": "TikTok-inspirert navigasjon opplevdes kjent", "en": "TikTok-inspired navigation felt familiar" }
+              ],
+              "revised": [
+                { "no": "Format-filter var vanskelig å oppdage", "en": "Format filter was hard to discover" },
+                { "no": "Autoplay-kontroll var vanskelig å oppdage", "en": "Autoplay control was hard to discover" },
+                { "no": "Hjem-ikon uten hus skapte forvirring", "en": "Home icon without house symbol caused confusion" }
+              ]
             }
           ]
         },
@@ -131,32 +155,45 @@
           "number": "01",
           "heading": { "no": "Format og kontroll er det unge savner", "en": "Format and control is what young people lack" },
           "body":    {
-            "no": "Dataene pekte på tre udekkede behov: format (video i feed), kontroll (algoritmefrihet) og bredde (innhold fra flere aviser uten dyre enkeltabonnementer). Vår opprinnelige hypotese om å effektivisere tekstproduksjon ville ikke løst ett eneste av disse.",
-            "en": "The data pointed to three unmet needs: format (video in a feed), control (freedom from algorithms), and breadth (content from multiple papers without expensive individual subscriptions). Our original hypothesis about streamlining text production would not have addressed a single one of these."
+            "no": "Dataene avdekket tre udekkede behov: video i feed, kontroll over algoritmer og innholdsbredde uten dyre enkeltabonnementer.",
+            "en": "The data revealed three unmet needs: video in a feed, algorithmic control, and content breadth without expensive individual subscriptions."
           }
         },
         {
           "number": "02",
           "heading": { "no": "TikTok er et nødvendig onde — ikke et valg", "en": "TikTok is a necessary evil — not a choice" },
           "body":    {
-            "no": "Unge bruker TikTok til nyheter fordi det er gratis — ikke fordi de stoler på det. Mediatilsynet (2025) finner at lav tillit skyldes manglende feedkontroll og uønsket algoritmisk eksponering. Det er et umettet behov for et troverdig, billig alternativ.",
-            "en": "Young people use TikTok for news because it's free — not because they trust it. Mediatilsynet (2025) finds that low trust stems from lack of feed control and unwanted algorithmic exposure. There is an unmet need for a credible, affordable alternative."
+            "no": "Unge bruker TikTok til nyheter fordi det er gratis — ikke fordi de stoler på det. Mediatilsynet (2025) peker på manglende feedkontroll som hovedårsaken.",
+            "en": "Young people use TikTok for news because it's free — not because they trust it. Mediatilsynet (2025) points to lack of feed control as the main driver of low trust."
           }
         },
         {
           "number": "03",
           "heading": { "no": "God onboarding er avgjørende selv i et kjent format", "en": "Good onboarding is critical even in a familiar format" },
           "body":    {
-            "no": "Brukertesten viste at feed-formatet ble umiddelbart gjenkjent, men nye funksjoner var vanskelige å oppdage uten veiledning. Ikoner som brøt med sosiale medier-konvensjoner skapte forvirring — og ledet til konkrete endringer i prototypen.",
-            "en": "The usability test showed the feed format was immediately recognised, but new functions were difficult to discover without guidance. Icons that broke with social media conventions caused confusion — and led to concrete revisions in the prototype."
+            "no": "Feed-formatet ble umiddelbart gjenkjent, men ikoner som brøt med sosiale medier-konvensjoner skapte forvirring — og ledet til konkrete endringer.",
+            "en": "The feed format was immediately recognised, but icons that broke social media conventions caused confusion — and led to concrete revisions."
           }
         }
       ],
       "pivot_image": {
-        "src": "assets/ung-debatt/lean-canvas.png",
-        "placeholder": { "no": "Lean Canvas B2B → B2C — den innsiktsbaserte pivoten", "en": "Lean Canvas B2B → B2C — the insight-driven pivot" },
-        "caption":     { "no": "Fra B2B (effektivisere debattjournalistenes arbeidsflyt) til B2C (tosidig plattform for unge og mediehus)", "en": "From B2B (streamlining debate journalists' workflow) to B2C (two-sided platform for young users and media houses)" },
-        "ratio": "4/3"
+        "type": "pivot-visual",
+        "from": {
+          "label": { "no": "B2B — Hypotesen", "en": "B2B — The Hypothesis" },
+          "items": [
+            { "key": { "no": "Kunde",   "en": "Customer" }, "value": { "no": "Ung Debatt (redaksjon)", "en": "Ung Debatt (editorial team)" } },
+            { "key": { "no": "Problem", "en": "Problem" },  "value": { "no": "Ineffektiv rekruttering av skribenter", "en": "Inefficient recruitment of writers" } },
+            { "key": { "no": "Løsning", "en": "Solution" }, "value": { "no": "Internt arbeidsverktøy", "en": "Internal workflow tool" } }
+          ]
+        },
+        "to": {
+          "label": { "no": "B2C — Pivoten", "en": "B2C — The Pivot" },
+          "items": [
+            { "key": { "no": "Kunder",  "en": "Customers" }, "value": { "no": "Unge (16–30) og norske mediehus", "en": "Young users (16–30) and Norwegian media houses" } },
+            { "key": { "no": "Problem", "en": "Problem" },   "value": { "no": "Manipulerende algoritmer og betalingsbarrierer", "en": "Manipulative algorithms and payment barriers" } },
+            { "key": { "no": "Løsning", "en": "Solution" },  "value": { "no": "Tosidig plattform med algoritmefri feed", "en": "Two-sided platform with algorithm-free feed" } }
+          ]
+        }
       },
       "screens": [
         { "src": "assets/ung-debatt/screen-home.png",       "placeholder": { "no": "Hjem — feed med video og tekst-format-velger",        "en": "Home — feed with video and text format selector" },        "caption": { "no": "Hjem — feed med video og tekst-format-velger",        "en": "Home — feed with video and text format selector" },        "ratio": "9/16" },
