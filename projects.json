@@ -11,6 +11,7 @@
       "en": "Winner of StudentDemo at Media City Bergen"
     },
     "category": "UX Research & Strategy",
+    "card_label": { "no": "Høst 2025", "en": "Autumn 2025" },
     "thumbnail": "assets/ung-debatt/pitch-studentdemo.jpg",
     "hero_image": {
       "src": "assets/ung-debatt/pitch-studentdemo-winners.JPG",
@@ -25,8 +26,8 @@
       "en": "Three in four young Norwegian first-time voters (75 %) get their news primarily from social media (Mediatilsynet, 2025). The frustration is shared: young readers want accessible content without manipulative algorithms, media houses want control over their own content and format. Both need a new platform."
     },
     "pivot": {
-      "no": "Prosjektet startet med en hypotese om å lage et B2B-verktøy som effektiviserte Ung debatts interne arbeidsprosess med rekruttering av unge skribenter. I de første intervjuene med gründeren og en debattjournalist fikk vi den første indikasjonen på at dette kunne være feil spor. Dokumentanalysen av Mediatilsynets rapporter (2025, 2024) og spørreundersøkelsen med 25 respondenter i målgruppen bekreftet dette: behovet i markedet handlet om format og kontroll, ikke intern effektivisering. Vi pivoterte til en B2C-plattform — en tosidig løsning som forener TikToks engasjerende feed-format med redaktørstyrt tillit og algoritmefri personalisering.",
-      "en": "The project began with a hypothesis to build a B2B tool streamlining Ung Debatt's internal workflow for recruiting and filtering young writers. Initial interviews with the founder and a debate journalist gave the first signal that this was the wrong track. Document analysis of Mediatilsynet's reports (2025, 2024) and a survey with 25 respondents in the target group confirmed it: the market need was about format and control, not internal efficiency. We pivoted to a B2C platform — a two-sided solution combining TikTok's engaging feed format with editorial trust and algorithm-free personalisation."
+      "no": "Prosjektet startet med en hypotese om å lage et B2B-verktøy som effektiviserte Ung debatts interne arbeidsprosess med rekruttering og formidling av unge skribenter og meninger. I de første intervjuene med gründeren og en debattjournalist fikk vi den første indikasjonen på at dette kunne være feil spor. Dokumentanalysen av Mediatilsynets rapporter (2025, 2024) og spørreundersøkelsen med 25 respondenter i målgruppen bekreftet dette: behovet i markedet handlet om format og kontroll. Vi pivoterte til en B2C-plattform — en tosidig løsning som forener TikToks engasjerende feed-format med redaktørstyrt tillit og algoritmefri personalisering.",
+      "en": "The project began with a hypothesis to build a B2B tool streamlining Ung Debatt's internal workflow for recruiting and filtering young writers. Initial interviews with the founder and a debate journalist gave the first signal that this was the wrong track. Document analysis of Mediatilsynet's reports (2025, 2024) and a survey with 25 respondents in the target group confirmed it: the market need was about format and control. We pivoted to a B2C platform — a two-sided solution combining TikTok's engaging feed format with editorial trust and algorithm-free personalisation."
     },
     "design_choices": [
       {
@@ -53,10 +54,10 @@
     ],
     "case": {
       "meta": {
-        "year":     "2025",
+        "course":   { "no": "MCB201 — Introduksjon til innovasjon og entreprenørskap", "en": "MCB201 — Introduction to Innovation and Entrepreneurship" },
         "role":     { "no": "UX-designer og Research Lead", "en": "UX Designer & Research Lead" },
         "team":     { "no": "Gruppeprosjekt — 3 studenter", "en": "Group project — 3 students" },
-        "duration": { "no": "Høst 2025 (ett semester)", "en": "Autumn 2025 (one semester)" },
+        "duration": { "no": "Høst 2025", "en": "Autumn 2025" },
         "tools":    ["Figma", "FigJam", "Google Forms", "Lean Canvas"]
       },
       "process": [

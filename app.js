@@ -1,6 +1,7 @@
 // ─── State ──────────────────────────────────────────────────
 let allProjects = [];
 let activeFilter = 'all';
+let currentProject = null;
 
 // ─── Three.js State ──────────────────────────────────────────
 let renderer, scene, camera, treeGroup, clock;
@@ -70,10 +71,13 @@ document.addEventListener('DOMContentLoaded', () => {
     currentLang = currentLang === 'en' ? 'no' : 'en';
     localStorage.setItem('lang', currentLang);
     applyLanguage(currentLang);
-    // Re-render cards so localised project text updates instantly
-    renderProjects(activeFilter === 'all'
-      ? allProjects
-      : allProjects.filter(p => p.category === activeFilter));
+    if (currentProject) {
+      renderCaseStudy(currentProject);
+    } else {
+      renderProjects(activeFilter === 'all'
+        ? allProjects
+        : allProjects.filter(p => p.category === activeFilter));
+    }
   });
 });
 
@@ -227,7 +231,7 @@ function createCard(project) {
   meta.className = 'project-meta';
   meta.innerHTML = `
     <span class="project-category">${escapeHtml(project.category)}</span>
-    <span class="project-year">${escapeHtml(project.course ?? project.year ?? '')}</span>
+    <span class="project-year">${escapeHtml(t(project, 'card_label') || project.course || project.year || '')}</span>
   `;
 
   // Title — uses t() to pick localised variant if available in projects.json
@@ -507,11 +511,13 @@ function handleRoute() {
 }
 
 function showHome() {
+  currentProject = null;
   document.getElementById('home-view').hidden = false;
   document.getElementById('case-view').hidden = true;
 }
 
 function showCaseStudy(project) {
+  currentProject = project;
   document.getElementById('home-view').hidden = true;
   renderCaseStudy(project);
   document.getElementById('case-view').hidden = false;
@@ -568,19 +574,19 @@ function renderCaseStudy(project) {
 
   // ── Meta row ────────────────────────────────────────────────
   const metaLabels = {
-    year:     { no: 'År',       en: 'Year' },
+    course:   { no: 'Emne',     en: 'Course' },
     role:     { no: 'Rolle',    en: 'Role' },
     team:     { no: 'Team',     en: 'Team' },
     duration: { no: 'Varighet', en: 'Duration' },
     tools:    { no: 'Verktøy',  en: 'Tools' },
   };
   const metaHtml = [
-    ['year',     c.meta.year],
+    ['course',   ls(c.meta.course)],
     ['role',     ls(c.meta.role)],
-    ['team',     ls(c.meta.team)],
     ['duration', ls(c.meta.duration)],
+    ['team',     ls(c.meta.team)],
     ['tools',    (c.meta.tools || []).join(', ')],
-  ].map(([key, val]) => `
+  ].filter(([, val]) => val).map(([key, val]) => `
     <div class="case-meta-item">
       <dt>${escapeHtml(ls(metaLabels[key]))}</dt>
       <dd>${escapeHtml(String(val))}</dd>
@@ -663,7 +669,6 @@ function renderCaseStudy(project) {
 
       <nav class="case-nav">
         <a href="#" class="case-back">${L.back}</a>
-        <span class="case-course">${escapeHtml(project.course || '')}</span>
       </nav>
 
       <header class="case-hero">
@@ -672,8 +677,9 @@ function renderCaseStudy(project) {
         ${project.tagline
           ? `<p class="case-tagline">${escapeHtml(ls(project.tagline))}</p>`
           : ''}
-        <dl class="case-meta">${metaHtml}</dl>
       </header>
+
+      <dl class="case-meta">${metaHtml}</dl>
 
       ${project.hero_image ? `
       <figure class="case-hero-image">
