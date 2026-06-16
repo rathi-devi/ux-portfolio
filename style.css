@@ -806,6 +806,17 @@ main,
   gap: var(--space-4);
 }
 
+.screens-grid .case-figure {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.screens-grid .case-figure img {
+  width: 100%;
+  height: auto;
+}
+
 @media (max-width: 768px) {
   .screens-grid { grid-template-columns: repeat(2, 1fr); }
 }

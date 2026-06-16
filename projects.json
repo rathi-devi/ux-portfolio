@@ -158,10 +158,10 @@
         "ratio": "4/3"
       },
       "screens": [
-        { "src": "assets/ung-debatt/screen-home.png",       "placeholder": { "no": "Hjem — feed med video og tekst-format-velger",        "en": "Home — feed with video and text format selector" },        "ratio": "9/16" },
-        { "src": "assets/ung-debatt/screen-location.png",   "placeholder": { "no": "Lokasjonsfunksjon — nasjonalt vs. lokalt innhold",      "en": "Location feature — national vs. local content" },          "ratio": "9/16" },
-        { "src": "assets/ung-debatt/screen-engagement.png", "placeholder": { "no": "Engasjement — svar med eget video- eller tekstinnlegg", "en": "Engagement — respond with your own video or text post" },  "ratio": "9/16" },
-        { "src": "assets/ung-debatt/screen-profile.png",    "placeholder": { "no": "Min profil — personalisering og abonnement",            "en": "My profile — personalisation and subscription" },           "ratio": "9/16" }
+        { "src": "assets/ung-debatt/screen-home.png",       "placeholder": { "no": "Hjem — feed med video og tekst-format-velger",        "en": "Home — feed with video and text format selector" },        "caption": { "no": "Hjem — feed med video og tekst-format-velger",        "en": "Home — feed with video and text format selector" },        "ratio": "9/16" },
+        { "src": "assets/ung-debatt/screen-location.png",   "placeholder": { "no": "Lokasjonsfunksjon — nasjonalt vs. lokalt innhold",      "en": "Location feature — national vs. local content" },          "caption": { "no": "Lokasjonsfunksjon — nasjonalt vs. lokalt innhold",      "en": "Location feature — national vs. local content" },          "ratio": "9/16" },
+        { "src": "assets/ung-debatt/screen-engagement.png", "placeholder": { "no": "Engasjement — svar med eget video- eller tekstinnlegg", "en": "Engagement — respond with your own video or text post" },  "caption": { "no": "Engasjement — svar med eget video- eller tekstinnlegg", "en": "Engagement — respond with your own video or text post" },  "ratio": "9/16" },
+        { "src": "assets/ung-debatt/screen-profile.png",    "placeholder": { "no": "Min profil — personalisering og abonnement",            "en": "My profile — personalisation and subscription" },           "caption": { "no": "Min profil — personalisering og abonnement",            "en": "My profile — personalisation and subscription" },           "ratio": "9/16" }
       ],
       "outcome": {
         "no": "Ung Debatt-appen vant StudentDemo på Media City Bergen høst 2025 — et panel av bransjeeksperter fremhevet at løsningen adresserer et reelt samfunnsproblem. Prosjektet ble invitert til å presentere på Medielærerseminaret 2026.",
