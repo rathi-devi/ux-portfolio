@@ -582,8 +582,8 @@ function renderCaseStudy(project) {
   };
   const metaHtml = [
     ['course',   ls(c.meta.course)],
-    ['role',     ls(c.meta.role)],
     ['duration', ls(c.meta.duration)],
+    ['role',     ls(c.meta.role)],
     ['team',     ls(c.meta.team)],
     ['tools',    (c.meta.tools || []).join(', ')],
   ].filter(([, val]) => val).map(([key, val]) => `
