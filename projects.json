@@ -14,8 +14,8 @@
     "card_label": { "no": "Høst 2025", "en": "Autumn 2025" },
     "thumbnail": "assets/ung-debatt/pitch-studentdemo.jpg",
     "hero_image": {
-      "src": "assets/ung-debatt/pitch-studentdemo-winners.JPG",
-      "caption": { "no": "Vinnere av StudentDemo, Media City Bergen", "en": "Winners of StudentDemo, Media City Bergen" }
+      "src": "assets/ung-debatt/mockup.png",
+      "caption": { "no": "Hi-Fi prototype — Ung Debatt Appen", "en": "Hi-Fi prototype — Youth Debate App" }
     },
     "summary": {
       "no": "Unge får nyheter fra TikTok, men stoler ikke på det. Vi designet alternativet.",
@@ -167,6 +167,11 @@
       "outcome": {
         "no": "Ung Debatt-appen vant StudentDemo på Media City Bergen høst 2025 — et panel av bransjeeksperter fremhevet at løsningen adresserer et reelt samfunnsproblem. Prosjektet ble invitert til å presentere på Medielærerseminaret 2026.",
         "en": "The Ung Debatt app won the StudentDemo at Media City Bergen, autumn 2025 — a panel of industry experts highlighted the solution's genuine societal value. The project was invited to present at Medielærerseminaret 2026."
+      },
+      "outcome_image": {
+        "src": "assets/ung-debatt/pitch-studentdemo-winners.JPG",
+        "caption": { "no": "Vinnere av StudentDemo, Media City Bergen", "en": "Winners of StudentDemo, Media City Bergen" },
+        "ratio": "16/9"
       }
     }
   },

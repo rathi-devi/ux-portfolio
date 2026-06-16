@@ -659,8 +659,7 @@ main,
 .case-hero-image img {
   width: 100%;
   max-height: 420px;
-  object-fit: cover;
-  object-position: center top;
+  object-fit: contain;
   border-radius: var(--radius-md);
   display: block;
 }

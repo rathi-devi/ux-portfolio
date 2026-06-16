@@ -661,6 +661,7 @@ function renderCaseStudy(project) {
     <section class="case-section">
       <h2>${L.outcome}</h2>
       <p class="outcome-text">${escapeHtml(ls(c.outcome))}</p>
+      ${c.outcome_image ? renderFigure(c.outcome_image) : ''}
     </section>` : '';
 
   // ── Assemble page ────────────────────────────────────────────
@@ -689,13 +690,6 @@ function renderCaseStudy(project) {
 
       ${contextHtml}
 
-      ${outcomeHtml}
-
-      <section class="case-section case-screens">
-        <h2>${L.screens}</h2>
-        <div class="screens-grid">${screensHtml}</div>
-      </section>
-
       ${pivotHtml}
 
       <section class="case-section case-process">
@@ -713,6 +707,13 @@ function renderCaseStudy(project) {
         <h2>${L.choices}</h2>
         <div class="choices-grid">${choicesHtml}</div>
       </section>
+
+      <section class="case-section case-screens">
+        <h2>${L.screens}</h2>
+        <div class="screens-grid">${screensHtml}</div>
+      </section>
+
+      ${outcomeHtml}
 
     </div>`;
 }
