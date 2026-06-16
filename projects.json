@@ -64,7 +64,7 @@
           },
           "images": [
             {
-              "src": null,
+              "src": "assets/ung-debatt/figjam-board.png",
               "placeholder": { "no": "FigJam Board — analyser, planlegging og innsikt", "en": "FigJam Board — analysis, planning and insight" },
               "caption":     { "no": "Arbeidsboard i FigJam brukt til å organisere og syntetisere data fra alle innsamlingsmetodene", "en": "FigJam working board used to organise and synthesise data from all collection methods" },
               "ratio": "16/9"
@@ -80,17 +80,11 @@
           },
           "images": [
             {
-              "src": null,
+              "src": "assets/ung-debatt/persona-tobias.png",
               "placeholder": { "no": "Persona: Tobias, 22 år — datadrevet fra spørreundersøkelse og rapporter", "en": "Persona: Tobias, 22 — data-driven from survey and reports" },
               "caption":     { "no": "Persona basert på data fra 25 spørreundersøkelsessvar og Mediatilsynets rapporter (2024, 2025)", "en": "Persona based on data from 25 survey responses and Mediatilsynet reports (2024, 2025)" },
               "ratio": "3/4"
             },
-            {
-              "src": null,
-              "placeholder": { "no": "Lean Canvas — versjon 1 (B2B) vs. versjon 2 (B2C)", "en": "Lean Canvas — version 1 (B2B) vs. version 2 (B2C)" },
-              "caption":     { "no": "Lean Canvas revidert etter pivoten fra B2B til B2C", "en": "Lean Canvas revised following the pivot from B2B to B2C" },
-              "ratio": "4/3"
-            }
           ]
         },
         {
