@@ -595,7 +595,6 @@ function renderCaseStudy(project) {
   // ── Context (new field, replaces overview) ───────────────────
   const contextHtml = project.context ? `
     <section class="case-section case-context">
-      <h2>${L.context}</h2>
       <p class="context-text">${escapeHtml(ls(project.context))}</p>
     </section>` : '';
 
@@ -658,11 +657,33 @@ function renderCaseStudy(project) {
 
   // ── Outcome ──────────────────────────────────────────────────
   const outcomeHtml = c.outcome ? `
-    <section class="case-section">
-      <h2>${L.outcome}</h2>
-      <p class="outcome-text">${escapeHtml(ls(c.outcome))}</p>
-      ${c.outcome_image ? renderFigure(c.outcome_image) : ''}
+    <section class="case-section case-outcome">
+      <div class="outcome-inner">
+        <div class="outcome-left">
+          <h2>${L.outcome}</h2>
+          <p class="outcome-text">${escapeHtml(ls(c.outcome))}</p>
+        </div>
+        ${c.outcome_image ? `
+        <figure class="outcome-image">
+          <img src="${escapeHtml(c.outcome_image.src)}" alt="${escapeHtml(ls(c.outcome_image.caption || ''))}" loading="lazy">
+        </figure>` : ''}
+      </div>
     </section>` : '';
+
+  // ── Sources footer ───────────────────────────────────────────
+  const sourcesHtml = (c.sources || []).length ? `
+    <footer class="case-footer">
+      <p class="case-footer-label">${lng === 'no' ? 'Kilder' : 'Sources'}</p>
+      <ol class="case-sources">
+        ${c.sources.map(s => `
+          <li>
+            <span class="source-ref">${escapeHtml(s.ref)}</span>
+            ${s.url
+              ? `<a href="${escapeHtml(s.url)}" target="_blank" rel="noopener">${escapeHtml(s.title)}</a>`
+              : escapeHtml(s.title)}
+          </li>`).join('')}
+      </ol>
+    </footer>` : '';
 
   // ── Assemble page ────────────────────────────────────────────
   document.getElementById('case-view').innerHTML = `
@@ -672,23 +693,23 @@ function renderCaseStudy(project) {
         <a href="#" class="case-back">${L.back}</a>
       </nav>
 
-      <header class="case-hero">
-        <p class="case-category">${escapeHtml(project.category)}</p>
-        <h1 class="case-title">${escapeHtml(ls(project.title))}</h1>
-        ${project.tagline
-          ? `<p class="case-tagline">${escapeHtml(ls(project.tagline))}</p>`
-          : ''}
-      </header>
-
       <dl class="case-meta">${metaHtml}</dl>
 
-      ${project.hero_image ? `
-      <figure class="case-hero-image">
-        <img src="${escapeHtml(project.hero_image.src)}" alt="${escapeHtml(ls(project.hero_image.caption))}" loading="lazy">
-        ${project.hero_image.caption ? `<figcaption>${escapeHtml(ls(project.hero_image.caption))}</figcaption>` : ''}
-      </figure>` : ''}
+      <div class="case-hero-wrapper">
+        <div class="case-main-left">
+          <header class="case-hero">
+            <p class="case-category">${escapeHtml(project.category)}</p>
+            <h1 class="case-title">${escapeHtml(ls(project.title))}</h1>
+          </header>
+          ${contextHtml}
+        </div>
 
-      ${contextHtml}
+        ${project.hero_image ? `
+        <figure class="case-hero-image">
+          <img src="${escapeHtml(project.hero_image.src)}" alt="${escapeHtml(ls(project.hero_image.caption))}" loading="lazy">
+          ${project.hero_image.caption ? `<figcaption>${escapeHtml(ls(project.hero_image.caption))}</figcaption>` : ''}
+        </figure>` : ''}
+      </div>
 
       ${pivotHtml}
 
@@ -715,7 +736,9 @@ function renderCaseStudy(project) {
 
       ${outcomeHtml}
 
-    </div>`;
+    </div>
+
+    ${sourcesHtml}`;
 }
 
 // ─── XSS Guard ───────────────────────────────────────────────

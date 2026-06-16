@@ -172,7 +172,19 @@
         "src": "assets/ung-debatt/pitch-studentdemo-winners.JPG",
         "caption": { "no": "Vinnere av StudentDemo, Media City Bergen", "en": "Winners of StudentDemo, Media City Bergen" },
         "ratio": "16/9"
-      }
+      },
+      "sources": [
+        {
+          "ref": "Mediatilsynet (2025).",
+          "title": "Feed, fornuft og følelser — Barn og unges forhold til nyhetene.",
+          "url": "https://www.medietilsynet.no/globalassets/publikasjoner/kritisk-medieforstaelse/2025/250813_feed-fornuft-og-folelser.pdf"
+        },
+        {
+          "ref": "Mediatilsynet (2024).",
+          "title": "Barn og medier — Medievaner, digital kompetanse og erfaringer med nettmobbing.",
+          "url": "https://www.medietilsynet.no/globalassets/publikasjoner/barn-og-medier-undersokelser/2024/241128_barn_og_medier_2024.pdf"
+        }
+      ]
     }
   },
   {
