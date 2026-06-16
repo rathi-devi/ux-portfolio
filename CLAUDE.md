@@ -194,3 +194,63 @@ git branch -d feature-navn
 ```
 
 GitHub Pages publiserer automatisk fra `main`-branchen.
+
+---
+
+## Innholdsregler — projects.json
+
+> Disse reglene gjelder for alle AI-assistenter som redigerer prosjektinnhold.
+
+### Sannhetskrav
+- **Ikke dikt opp** metoder, verktøy, antall respondenter, funn eller resultater.
+- Hvis et felt mangler faktisk data, bruk en tydelig plassholder: `[Sett inn her]`
+- Ikke gjett eller interpoler fra lignende prosjekter.
+
+### Kildefiler for MCB201 (Ung Debatt-prosjektet)
+All faktainformasjon skal hentes fra disse dokumentene:
+- `MCB201_Individuell.pdf` — individuell refleksjonsoppgave (primærkilde for prosess og pivot)
+- `MCB201_Rapport.pdf` — semesteroppgave/bransjerapport (primærkilde for prototyp og designvalg)
+- `MCB201_PITCH_.pptx` — pitchpresentasjon
+- `MCB201_Medielærerseminaret_2026.pptx` — seminarpresentasjon
+
+### Dokumenterte fakta — MCB201
+
+**Prosjekt**
+- Kurs: MCB201, Høst 2025, Universitetet i Bergen
+- Team: 3 studenter (kandidatnummer 138, 116, 115)
+- Samarbeidspartner: Ung Debatt (ungdebatt.no)
+- Resultat: Vant StudentDemo på Media City Bergen. Presentert på Medielærerseminaret 2026.
+
+**Metoder brukt (faktisk dokumentert)**
+- Ustrukturerte intervjuer: 2 møter med Ung Debatt (gründer + 1 debattjournalist) + e-postkommunikasjon
+- Dokumentanalyse: Mediatilsynet «Feed, Fornuft og Følelser» (2025) og «Barn og medier» (2024), Brandal (2024)
+- Spørreundersøkelse: Google Forms, 25 respondenter, aldersgruppe 16–30 år
+- Verktøy for analyse: FigJam Board
+- Persona: «Tobias», 22 år, sykepleierstudent — datadrevet
+- Forretningsmodell: Lean Canvas, SWOT-analyse
+- Prototyping: Lo-Fi → Hi-Fi i Figma
+- Brukertest: Think-Aloud med 3 medstudenter fra målgruppen
+- Pitch: 5 min live pitch på StudentDemo, Media City Bergen
+
+**Metoder som IKKE ble brukt — ikke skriv dette**
+- Maze
+- 8, 12 eller andre antall intervjupersoner enn dokumentert ovenfor
+- Hi-Fi-brukertest med 8 deltakere
+
+**Nøkkelfunn (fra dokumentene)**
+- 75 % av unge norske førstegangsvelgere får nyheter fra sosiale medier (Mediatilsynet, 2025)
+- Unge foretrekker video i feed-format, men misliker algoritmer og manglende feedkontroll
+- Betalingsvilje: maks ~100 kr/mnd (BT koster 229 kr/mnd for unge)
+- Unge opplever sosiale medier som for utrygge til offentlig debatt (fare for latterliggjøring)
+- Mediehus er frustrerte over avhengighet til tredjepartsplattformer
+
+**Pivoten**
+- Fra: B2B — effektivisere Ung Debatts interne rekruttering av skribenter
+- Til: B2C — tosidig plattform for unge (16–30) og norske mediehus
+- Utløst av: dokumentanalyse + spørreundersøkelse avkreftet opprinnelig hypotese
+
+**Designvalg (faktisk dokumentert fra brukertesten)**
+- Feed-format og TikTok-inspirerte ikoner ble umiddelbart gjenkjent (positivt)
+- Format-filter og autoplay-kontroll var vanskelig å oppdage (negativt)
+- Ikoner som brøt med sosiale medier-konvensjoner skapte forvirring (f.eks. hjem-knapp uten hus-ikon)
+- Ingen likes eller kommentarfelt — debatt via svar-innlegg
