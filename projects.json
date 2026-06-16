@@ -16,8 +16,8 @@
       "en": "A two-sided news and debate platform for young people (16–30) that adopts TikTok's feed format but replaces manipulative algorithms with full user control and editorially curated content. The project was driven by an insight-based pivot: we started with a B2B hypothesis, disproved it through user-centred research, and landed on a B2C platform addressing a genuine market gap."
     },
     "context": {
-      "no": "Tre av fire unge norske førstegangsvelgere (75 %) oppgir at de primært får nyheter fra sosiale medier (Mediatilsynet, 2025). Paradokset er at de bruker TikTok fordi innholdet er gratis og tilgjengelig, men har lav tillit til plattformen og dens algoritmer. Redaktørstyrte medier er til stede på TikTok, men opplever det som et nødvendig onde: de mister kontroll over format, regler og algoritmer. Unge søker en tryggere debattarena — sosiale medier oppleves som for utrygge og uoversiktlige til å ytre seg politisk.",
-      "en": "Three in four young Norwegian first-time voters (75 %) report getting their news primarily from social media (Mediatilsynet, 2025). The paradox is that they use TikTok because content is free and accessible, yet trust the platform and its algorithms very little. Editorial media are present on TikTok but experience it as a necessary evil: they lose control over format, rules, and algorithms. Young people seek a safer debate arena — social media feel too unsafe and chaotic for political expression."
+      "no": "Tre av fire unge norske førstegangsvelgere (75 %) oppgir at de primært får nyheter fra sosiale medier (Mediatilsynet, 2025). Paradokset er at de bruker TikTok fordi innholdet er gratis og tilgjengelig, men har lav tillit til plattformen og dens algoritmer. Redaktørstyrte medier er til stede på TikTok, men opplever det som et nødvendig onde: de mister kontroll over format, regler og algoritmer. Unge søker en tryggere debattarena — sosiale medier oppleves som for utrygge og uoversiktlige til å ytre seg politisk. Prosjektet ble gjennomført som del av emnet MCB201 Introduksjon til innovasjon og entreprenørskap ved Universitetet i Bergen.",
+      "en": "Three in four young Norwegian first-time voters (75 %) report getting their news primarily from social media (Mediatilsynet, 2025). The paradox is that they use TikTok because content is free and accessible, yet trust the platform and its algorithms very little. Editorial media are present on TikTok but experience it as a necessary evil: they lose control over format, rules, and algorithms. Young people seek a safer debate arena — social media feel too unsafe and chaotic for political expression. This project was carried out as part of the course MCB201 Introduction to Innovation and Entrepreneurship at the University of Bergen."
     },
     "pivot": {
       "no": "Prosjektet startet med en hypotese om å lage et B2B-verktøy som effektiviserte Ung debatts interne arbeidsprosess med rekruttering og siling av unge skribenter. I de første intervjuene med gründeren og en debattjournalist fikk vi den første indikasjonen på at dette kunne være feil spor. Dokumentanalysen av Mediatilsynets rapporter (2025, 2024) og spørreundersøkelsen med 25 respondenter i målgruppen bekreftet dette: behovet i markedet handlet om format og kontroll, ikke intern effektivisering. Vi pivoterte til en B2C-plattform — en tosidig løsning som forener TikToks engasjerende feed-format med redaktørstyrt tillit og algoritmefri personalisering.",
@@ -84,7 +84,7 @@
               "placeholder": { "no": "Persona: Tobias, 22 år — datadrevet fra spørreundersøkelse og rapporter", "en": "Persona: Tobias, 22 — data-driven from survey and reports" },
               "caption":     { "no": "Persona basert på data fra 25 spørreundersøkelsessvar og Mediatilsynets rapporter (2024, 2025)", "en": "Persona based on data from 25 survey responses and Mediatilsynet reports (2024, 2025)" },
               "ratio": "3/4"
-            },
+            }
           ]
         },
         {
@@ -96,15 +96,9 @@
           },
           "images": [
             {
-              "src": null,
-              "placeholder": { "no": "Lo-Fi wireframes — Figma", "en": "Lo-Fi wireframes — Figma" },
-              "caption":     { "no": "Lo-Fidelity prototype brukt til konsepttesting før Hi-Fi-iterasjon", "en": "Lo-Fidelity prototype used for concept testing before Hi-Fi iteration" },
-              "ratio": "16/9"
-            },
-            {
-              "src": null,
-              "placeholder": { "no": "Think-Aloud brukertest — 3 deltakere fra målgruppen", "en": "Think-Aloud usability test — 3 participants from the target group" },
-              "caption":     { "no": "Brukertesting med testguide og scenarier, gjennomført med tre medstudenter i målgruppen", "en": "Usability testing using a test guide and scenarios, conducted with three fellow students in the target group" },
+              "src": "assets/ung-debatt/prototype.png",
+              "placeholder": { "no": "Hi-Fi prototype — fullstendig skjermflyt", "en": "Hi-Fi prototype — complete screen flow" },
+              "caption":     { "no": "Hi-Fidelity prototype i Figma — fullstendig skjermflyt med realistisk innhold", "en": "Hi-Fidelity prototype in Figma — complete screen flow with realistic content" },
               "ratio": "16/9"
             }
           ]
@@ -118,7 +112,7 @@
           },
           "images": [
             {
-              "src": null,
+              "src": "assets/ung-debatt/pitch-studentdemo.jpg",
               "placeholder": { "no": "Pitch-presentasjon — StudentDemo, Media City Bergen", "en": "Pitch presentation — StudentDemo, Media City Bergen" },
               "caption":     { "no": "Live pitch på StudentDemo, Media City Bergen — prosjektet vant", "en": "Live pitch at StudentDemo, Media City Bergen — the project won" },
               "ratio": "16/9"
@@ -153,16 +147,16 @@
         }
       ],
       "pivot_image": {
-        "src": null,
+        "src": "assets/ung-debatt/lean-canvas.png",
         "placeholder": { "no": "Lean Canvas B2B → B2C — den innsiktsbaserte pivoten", "en": "Lean Canvas B2B → B2C — the insight-driven pivot" },
         "caption":     { "no": "Fra B2B (effektivisere debattjournalistenes arbeidsflyt) til B2C (tosidig plattform for unge og mediehus)", "en": "From B2B (streamlining debate journalists' workflow) to B2C (two-sided platform for young users and media houses)" },
         "ratio": "4/3"
       },
       "screens": [
-        { "src": null, "placeholder": { "no": "Hjem — feed med video og tekst-format-velger",        "en": "Home — feed with video and text format selector" },        "ratio": "9/16" },
-        { "src": null, "placeholder": { "no": "Lokasjonsfunksjon — nasjonalt vs. lokalt innhold",      "en": "Location feature — national vs. local content" },          "ratio": "9/16" },
-        { "src": null, "placeholder": { "no": "Engasjement — svar med eget video- eller tekstinnlegg", "en": "Engagement — respond with your own video or text post" },  "ratio": "9/16" },
-        { "src": null, "placeholder": { "no": "Min profil — personalisering og abonnement",            "en": "My profile — personalisation and subscription" },           "ratio": "9/16" }
+        { "src": "assets/ung-debatt/screen-home.png",       "placeholder": { "no": "Hjem — feed med video og tekst-format-velger",        "en": "Home — feed with video and text format selector" },        "ratio": "9/16" },
+        { "src": "assets/ung-debatt/screen-location.png",   "placeholder": { "no": "Lokasjonsfunksjon — nasjonalt vs. lokalt innhold",      "en": "Location feature — national vs. local content" },          "ratio": "9/16" },
+        { "src": "assets/ung-debatt/screen-engagement.png", "placeholder": { "no": "Engasjement — svar med eget video- eller tekstinnlegg", "en": "Engagement — respond with your own video or text post" },  "ratio": "9/16" },
+        { "src": "assets/ung-debatt/screen-profile.png",    "placeholder": { "no": "Min profil — personalisering og abonnement",            "en": "My profile — personalisation and subscription" },           "ratio": "9/16" }
       ],
       "outcome": {
         "no": "Ung Debatt-appen vant StudentDemo på Media City Bergen høst 2025, og ble løftet frem av dommerne som en samfunnsnyttig løsning på et reelt problem. Prosjektet ble også presentert på Medielærerseminaret 2026. Den individuelle refleksjonsoppgaven analyserte utviklingsprosessen under tittelen 'Innsikt som katalysator' og viste årsakssammenhengen mellom brukersentrert metode og den strategiske pivoten.",
